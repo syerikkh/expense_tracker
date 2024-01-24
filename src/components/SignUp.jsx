@@ -1,9 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppIcon } from './Icons/AppIcon'
 import Link from 'next/link'
 import { BlueLabel } from './BlueLabel'
+import { config } from 'next/dist/build/templates/pages'
 
 export const SignUp = () => {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const getInput = () => {
+        setName(name)
+        setEmail(email)
+        setPassword(password)
+    }
+
+    const fetchData = async () => {
+        const res = await fetch('http://localhost:8000/signup')
+        const data = await res.json()
+
+    }
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+    const signUp = async () => {
+        try {
+            const res = await fetch('http://localhost:8000/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(getInput())
+            })
+
+        } catch (error) {
+            alert(error)
+        }
+    }
+
     return (
         <div className="w-[100vw] h-[100vh] flex justify-center items-center">
             <div className="w-1/2 h-full bg-[#0166FF] flex justify-center items-center">
@@ -21,19 +56,19 @@ export const SignUp = () => {
                     </div>
                     <div className="flex flex-col gap-4 w-full">
                         <div>
-                            <input type="text" placeholder="Name" className="p-2 border w-full rounded-md"></input>
+                            <input value={name} onChange={e => setName(e.target.value)} type="text" placeholder="Name" className="p-2 border w-full rounded-md"></input>
                         </div>
                         <div>
-                            <input type="text" placeholder="Email" className="p-2 border w-full rounded-md"></input>
+                            <input value={email} onChange={e => setEmail(e.target.value)} type="text" placeholder="Email" className="p-2 border w-full rounded-md"></input>
                         </div>
                         <div>
-                            <input type="text" placeholder="Password" className="p-2 border w-full rounded-md"></input>
+                            <input value={password} onChange={e => setPassword(e.target.value)} type="text" placeholder="Password" className="p-2 border w-full rounded-md"></input>
                         </div>
                         <div>
                             <input type="text" placeholder="Re-Password" className="p-2 border w-full rounded-md"></input>
                         </div>
                         <div>
-                            <BlueLabel text='Sign up' />
+                            <button onClick={signUp} className="bg-[#0166FF] text-white p-4 w-full rounded-3xl">Sign up</button>
                         </div>
                     </div>
                     <div className="flex items-center justify-center">
