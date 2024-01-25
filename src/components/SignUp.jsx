@@ -1,28 +1,44 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { AppIcon } from './Icons/AppIcon'
 import Link from 'next/link'
 import { BlueLabel } from './BlueLabel'
-import { config } from 'next/dist/build/templates/pages'
+import { useRouter } from 'next/router'
+
 
 export const SignUp = () => {
+    const router = useRouter();
+    const [input, setInput] = useState([])
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const getInput = () => {
-        setName(name)
-        setEmail(email)
-        setPassword(password)
-    }
+    // const getInput = () => {
+    //     return { name, email, password }
+    // }
 
     const fetchData = async () => {
-        const res = await fetch('http://localhost:8000/signup')
-        const data = await res.json()
-
+        try {
+            const res = await fetch('http://localhost:8000/signup')
+            const data = await res.json()
+            console.log(data, 'data')
+        } catch (error) {
+            console.error(error)
+        }
     }
     useEffect(() => {
         fetchData();
     }, [])
+
+    const getInput = () => {
+        setInput({
+            name,
+            email,
+            password
+        })
+    }
+    useMemo(() => {
+        getInput()
+    }, [name, email, password])
 
     const signUp = async () => {
         try {
@@ -31,12 +47,21 @@ export const SignUp = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(getInput())
+                body: JSON.stringify(input)
+
+
             })
+
+            console.log('signed up successfully')
+
 
         } catch (error) {
             alert(error)
+            console.log(error, 'error')
         }
+        setName('');
+        setEmail('');
+        setPassword('');
     }
 
     return (
@@ -68,7 +93,7 @@ export const SignUp = () => {
                             <input type="text" placeholder="Re-Password" className="p-2 border w-full rounded-md"></input>
                         </div>
                         <div>
-                            <button onClick={signUp} className="bg-[#0166FF] text-white p-4 w-full rounded-3xl">Sign up</button>
+                            <Link href={'/currency'}><button onClick={signUp} className="bg-[#0166FF] text-white p-4 w-full rounded-3xl">Sign up</button></Link>
                         </div>
                     </div>
                     <div className="flex items-center justify-center">
