@@ -73,7 +73,20 @@ export const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='w-[588px] h-36 bg-white rounded-2xl'></div>
+                    <div className='w-[588px] h-[322px] bg-white rounded-2xl'>
+                        <div className='h-14 w-full p-6 border-b-2 flex items-center'>
+                            <h1 className='font-semibold'>Income - Expense</h1>
+                        </div>
+                        <div className='py-8 px-6'>
+                            <div class="w-full">
+                                <canvas
+                                    data-te-chart="bar"
+                                    data-te-labels="['Monday', 'Tuesday' , 'Wednesday' , 'Thursday' , 'Friday' , 'Saturday' , 'Sunday ']"
+                                    data-te-dataset-data="[2112, 2343, 2545, 3423, 2365, 1985, 987]">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div >
