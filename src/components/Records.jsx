@@ -2,6 +2,7 @@ import React from 'react'
 import { AppIcon } from './Icons/AppIcon'
 import { Category } from './Category'
 import { PlusIcon } from './Icons/PlusIcon'
+import { RecordsPart2 } from './RecordsPart2'
 
 export const Records = () => {
     return (
@@ -19,7 +20,7 @@ export const Records = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex px-[340px] mt-9'>
+            <div className='flex gap-4 px-[340px] mt-9'>
                 <div className='py-6 px-3 flex flex-col gap-6 bg-white rounded-lg w-[282px]'>
                     <h1 className='font-semibold text-xl'>Records</h1>
                     <button className="btn btn-primary rounded-3xl flex gap-2 w-[250px] h-8">+ Add</button>
@@ -69,18 +70,17 @@ export const Records = () => {
                         <p className='font-bold'>Amount Range</p>
                         <div className='flex justify-between gap-2 w-full'>
                             <div className='p-4 bg-[#F3F4F6] mt-2 w-[114px] rounded-lg'>
-                                <p></p>
+                                <p>0</p>
                             </div>
                             <div className='p-4 bg-[#F3F4F6] mt-2 w-[114px] rounded-lg'>
-                                <p></p>
+                                <p>1000</p>
                             </div>
                         </div>
-                        <input type="range" min={0} max="100" value="40" className="range" />
+                        <input type="range" min={0} max="1000" className="range w-full range-primary mt-4" />
                     </div>
                 </div>
-                <div>
 
-                </div>
+                <RecordsPart2 />
             </div>
         </div >
     )
