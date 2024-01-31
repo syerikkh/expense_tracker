@@ -7,10 +7,11 @@ import { useRouter } from 'next/router'
 
 export const SignUp = () => {
     const router = useRouter();
-    const [input, setInput] = useState([])
+    // const [input, setInput] = useState([])
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rePassword, setRePassword] = useState('');
 
     // const getInput = () => {
     //     return { name, email, password }
@@ -29,28 +30,31 @@ export const SignUp = () => {
         fetchData();
     }, [])
 
-    const getInput = () => {
-        setInput({
-            name,
-            email,
-            password
-        })
-    }
-    useMemo(() => {
-        getInput()
-    }, [name, email, password])
+    // const getInput = () => {
+    //     setInput({
+    //         name,
+    //         email,
+    //         password
+    //     })
+    // }
+    // useMemo(() => {
+    //     getInput()
+    // }, [name, email, password])
 
     const signUp = async () => {
+        if (password !== rePassword) {
+            alert("Passwords do not match");
+            return;
+        }
         try {
             const res = await fetch('http://localhost:8000/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(input)
-
-
+                body: JSON.stringify({ name, email, password })
             })
+
 
             console.log('signed up successfully')
 
@@ -90,7 +94,7 @@ export const SignUp = () => {
                             <input value={password} onChange={e => setPassword(e.target.value)} type="text" placeholder="Password" className="p-2 border w-full rounded-md"></input>
                         </div>
                         <div>
-                            <input type="text" placeholder="Re-Password" className="p-2 border w-full rounded-md"></input>
+                            <input value={rePassword} onChange={e => setRePassword(e.target.value)} type="text" placeholder="Re-Password" className="p-2 border w-full rounded-md"></input>
                         </div>
                         <div>
                             <Link href={'/currency'}><button onClick={signUp} className="bg-[#0166FF] text-white p-4 w-full rounded-3xl">Sign up</button></Link>

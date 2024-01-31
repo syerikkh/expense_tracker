@@ -3,6 +3,7 @@ import { AppIcon } from './Icons/AppIcon'
 import { Category } from './Category'
 import { PlusIcon } from './Icons/PlusIcon'
 import { RecordsPart2 } from './RecordsPart2'
+import Link from 'next/link'
 
 export const Records = () => {
     return (
@@ -11,7 +12,7 @@ export const Records = () => {
                 <div className='flex justify-between '>
                     <div className='flex gap-6'>
                         <AppIcon />
-                        <h1 className='font-semibold'>Dashboard</h1>
+                        <Link href={"/dashboard"}><button className='font-semibold'>Dashboard</button></Link>
                         <h1>Records</h1>
                     </div>
                     <div>

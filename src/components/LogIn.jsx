@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { BlueLabel } from './BlueLabel'
 
 export const LogIn = () => {
-    const [input, setInput] = useState([]);
+    // const [input, setInput] = useState([]);
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -17,12 +18,12 @@ export const LogIn = () => {
         fetchData()
     }, []);
 
-    const getInput = () => {
-        setInput({ email, password })
-    }
-    useMemo(() => {
-        getInput()
-    }, [email, password])
+    // const getInput = () => {
+    //     setInput({ email, password })
+    // }
+    // useMemo(() => {
+    //     getInput()
+    // }, [email, password])
 
     const logIn = async () => {
         try {
@@ -31,9 +32,16 @@ export const LogIn = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(input)
+                body: JSON.stringify({ email, password })
             });
-            console.log('successfully logged in')
+
+            if (res.ok) {
+                console.log('Successfully logged in');
+                router.push("/dashboard");
+
+            } else {
+                console.log('Invalid email or password');
+            }
 
         } catch (error) {
             console.error(error)

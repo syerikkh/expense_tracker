@@ -3,8 +3,11 @@ import { AppIcon } from './Icons/AppIcon'
 import { GreenDot } from './Icons/GreenDot'
 import { LeadingIcon } from './Icons/LeadingIcon'
 import { BlueDot } from './Icons/BlueDot'
+import Link from 'next/link'
 
 export const Dashboard = () => {
+
+
     return (
         <div className='w-[100vw] h-[100vh] flex flex-col bg-[#F3F4F6]'>
             <div className='w-full px-[340px] py-6 bg-white'>
@@ -12,7 +15,7 @@ export const Dashboard = () => {
                     <div className='flex gap-6'>
                         <AppIcon />
                         <h1 className='font-semibold'>Dashboard</h1>
-                        <h1>Records</h1>
+                        <Link href={"/records"}><button>Records</button></Link>
                     </div>
                     <div>
                         <div className='p-2 bg-[#0166FF] text-white rounded-full'>+ Record</div>
