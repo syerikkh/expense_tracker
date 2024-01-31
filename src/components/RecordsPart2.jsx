@@ -35,20 +35,20 @@ export const RecordsPart2 = () => {
                 </div>
                 <div className='flex flex-col gap-3'>
                     <IncomeExpense day="Today" />
-                    <Select text="Lending & Renting" time="14:00" expense="-1,000" />
+                    {/* <Select text="Lending & Renting" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
-                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
+                    <Select text="Food & Drinks" time="14:00" expense="-1,000" /> */}
                 </div>
                 <div className='flex flex-col gap-3'>
                     <IncomeExpense day="Yesterday" />
+                    {/* <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
-                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
-                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
+                    <Select text="Food & Drinks" time="14:00" expense="-1,000" /> */}
                 </div>
             </div>
         </div >

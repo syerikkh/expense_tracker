@@ -8,6 +8,7 @@ import { Loading } from "@/components/Loading";
 import { Stepper } from "@/components/Currency";
 import { Dashboard } from "@/components/Dashboard";
 import { Records } from "@/components/Records";
+import { AddRecord } from "@/components/AddRecord";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,5 +20,6 @@ export default function Home() {
     // <Stepper />
     // <Dashboard />
     // <Records />
+    // <AddRecord/>
   );
 }
