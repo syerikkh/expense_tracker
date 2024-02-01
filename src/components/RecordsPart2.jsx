@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { LeftArrowIcon } from './Icons/LeftArrowIcon'
 import { RightArrowIcon } from './Icons/RightArrowIcon'
 import { DownIcon } from './Icons/DownIcon'
 import { IncomeExpense } from './IncomeExpense'
 import { Select } from './Select'
+import { RecordContext } from '@/context/RecordCont'
 
 export const RecordsPart2 = () => {
+    const { amount,
+        setAmount,
+        category,
+        setCategory,
+        date,
+        setDate,
+        time,
+        setTime, addRecord } = useContext(RecordContext);
+
     return (
         <div className='w-full flex flex-col'>
             <div className='flex justify-between'>
@@ -34,9 +44,9 @@ export const RecordsPart2 = () => {
                     </div>
                 </div>
                 <div className='flex flex-col gap-3'>
-                    <IncomeExpense day="Today" />
-                    {/* <Select text="Lending & Renting" time="14:00" expense="-1,000" />
-                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
+                    <IncomeExpense day={date} />
+                    <Select text={category} time={time} expense={amount} />
+                    {/* <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" /> */}

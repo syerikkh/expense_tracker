@@ -3,6 +3,7 @@ import { Router, useRouter } from 'next/router'
 import { AppIcon } from './Icons/AppIcon'
 import Link from 'next/link'
 import { BlueLabel } from './BlueLabel'
+import { Loading } from './Loading'
 
 export const LogIn = () => {
     // const [input, setInput] = useState([]);
@@ -40,7 +41,7 @@ export const LogIn = () => {
                 router.push("/dashboard");
 
             } else {
-                console.log('Invalid email or password');
+                alert('Invalid email or password');
             }
 
         } catch (error) {

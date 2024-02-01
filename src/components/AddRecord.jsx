@@ -1,9 +1,23 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { Category } from './Category';
+import { RecordContext } from '@/context/RecordCont';
 
 export const AddRecord = () => {
     const [close, setClose] = useState(false);
     const [toggleExpense, setToggleExpense] = useState(false);
-    const [toggleIncome, setToggleIncome] = useState(false);
+    const [localAmount, setLocalAmount] = useState('');
+    const [localCategory, setLocalCategory] = useState('');
+    const [localTime, setLocalTime] = useState('');
+    const [localDate, setLocalDate] = useState('');
+
+    const { amount, setAmount, time, setTime, date, setDate, category, setCategory, addRecord } = useContext(RecordContext);
+
+    setAmount(localAmount);
+    setCategory(localCategory);
+    setDate(localDate);
+    setTime(localTime)
+
+
     return (
         <div className={`w-full fixed top-0 h-screen flex justify-center items-center ${close && "hidden"}`} >
             <div className='w-screen h-screen bg-[#00000080] absolute left-0 bottom-0'>
@@ -21,18 +35,18 @@ export const AddRecord = () => {
                     <div className='px-5 py-6 w-1/2'>
                         <div className='flex flex-col gap-5'>
                             <div className='bg-[#F3F4F6] rounded-3xl'>
-                                <button onClick={() => setToggleExpense(!toggleExpense)} className={`btn shadow-none btn-primary hover:text-white rounded-3xl w-44 ${toggleExpense && "bg-[#F3F4F6] border-none text-black"}`}>Expence</button>
-                                < button onClick={() => setToggleIncome(!toggleIncome)} className={`btn shadow-none btn-[#F3F4F6] hover:bg-[#16A34A] text-white rounded-3xl w-44 ${toggleIncome ? "bg-[#16A34A]" : "bg-[#F3F4F6] text-black"}`}>Income</button>
+                                <button onClick={() => setToggleExpense(!toggleExpense)} className={`btn shadow-none btn-primary hover:bg-[#F3F4F6] rounded-3xl w-44 ${toggleExpense ? "bg-[#F3F4F6] border-none text-black" : "btn-primary"}`}>Expence</button>
+                                < button onClick={() => setToggleExpense(!toggleExpense)} className={`btn shadow-none btn-[#F3F4F6] hover:bg-[#F3F4F6] text-black rounded-3xl w-44 ${toggleExpense ? "bg-[#16A34A]  text-white" : "bg-[#F3F4F6]  text-black"}`}>Income</button>
 
                             </div>
                             <div className='flex flex-col gap-2'>
                                 <div className='bg-[#F3F4F6] p-3 flex flex-col rounded-lg border'>
                                     <label for="html">Amount</label>
-                                    <input type="number" placeholder='₮ 000.00' className='bg-[#F3F4F6]' />
+                                    <input value={localAmount} onChange={e => { setLocalAmount(e.target.value) }} type="number" placeholder='₮ 000.00' className='bg-[#F3F4F6]' />
                                 </div>
                                 <div>
                                     <label for="html">Category</label>
-                                    <select className="select select-bordered w-full mt-1 text-[#94A3B8]">
+                                    <select value={localCategory} onChange={e => { setLocalCategory(e.target.value) }} className="select select-bordered w-full mt-1 text-[#94A3B8]">
                                         <option>{toggleExpense ? "Find or choose category" : "Food & Drinks"}</option>
                                         <option>Shopping</option>
                                         <option>Housing</option>
@@ -49,15 +63,15 @@ export const AddRecord = () => {
                                 <div className='flex gap-2'>
                                     <div className='flex flex-col'>
                                         <label for="html">Date</label>
-                                        <input type="date" className='border p-2 rounded-lg' />
+                                        <input value={localDate} onChange={e => { setLocalDate(e.target.value) }} type="date" className='border p-2 rounded-lg' />
                                     </div>
                                     <div className='flex flex-col'>
                                         <label for="html">Time</label>
-                                        <input type="time" className='border p-2 rounded-lg' />
+                                        <input value={localTime} onChange={e => { setLocalTime(e.target.value) }} type="time" className='border p-2 rounded-lg' />
                                     </div>
                                 </div>
                             </div>
-                            <div className='mt-2'><button className={`btn btn-primary shadow-none border-none rounded-3xl w-full ${toggleExpense && "bg-[#16A34A] hover:bg-[#16A34A]"}`}> Add Record</button></div>
+                            <div onClick={() => { setClose(!close); addRecord(localAmount, localCategory, localDate, localTime) }} className='mt-2'><button className={`btn btn-primary shadow-none border-none rounded-3xl w-full ${toggleExpense && "bg-[#16A34A] hover:bg-[#16A34A]"}`}> Add Record</button></div>
                         </div>
                     </div>
                     <div className='px-5 py-6 w-1/2 flex flex-col gap-8'>
