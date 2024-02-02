@@ -8,6 +8,7 @@ import { AddRecord } from './AddRecord'
 
 export const Records = () => {
     const [addRecords, setAddRecords] = useState(false);
+    const [range, setRange] = useState();
     return (
         <>
             <div className='w-[100vw] flex flex-col bg-[#F3F4F6]'>
@@ -77,11 +78,11 @@ export const Records = () => {
                                 <div className='p-4 bg-[#F3F4F6] mt-2 w-[114px] rounded-lg'>
                                     <p>0</p>
                                 </div>
-                                <div className='p-4 bg-[#F3F4F6] mt-2 w-[114px] rounded-lg'>
-                                    <p>1000</p>
+                                <div className='p-4 bg-[#F3F4F6] mt-2 w-[114px] rounded-lg flex justify-center items-center'>
+                                    <p>{range}</p>
                                 </div>
                             </div>
-                            <input type="range" min={0} max="1000" className="range w-full range-primary mt-4" />
+                            <input value={range} onChange={e => setRange(e.target.value)} type="range" min={0} max="1000" className="range w-full range-primary mt-4" />
                         </div>
                     </div>
 

@@ -15,8 +15,7 @@ export const AddRecord = () => {
     setAmount(localAmount);
     setCategory(localCategory);
     setDate(localDate);
-    setTime(localTime)
-
+    setTime(localTime);
 
     return (
         <div className={`w-full fixed top-0 h-screen flex justify-center items-center ${close && "hidden"}`} >
@@ -47,7 +46,8 @@ export const AddRecord = () => {
                                 <div>
                                     <label for="html">Category</label>
                                     <select value={localCategory} onChange={e => { setLocalCategory(e.target.value) }} className="select select-bordered w-full mt-1 text-[#94A3B8]">
-                                        <option>{toggleExpense ? "Find or choose category" : "Food & Drinks"}</option>
+                                        <option value="" disabled>{toggleExpense ? "Find or choose category" : "Choose"}</option>
+                                        <option>Food</option>
                                         <option>Shopping</option>
                                         <option>Housing</option>
                                         <option>Transportation</option>
@@ -71,7 +71,7 @@ export const AddRecord = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div onClick={() => { setClose(!close); addRecord(localAmount, localCategory, localDate, localTime) }} className='mt-2'><button className={`btn btn-primary shadow-none border-none rounded-3xl w-full ${toggleExpense && "bg-[#16A34A] hover:bg-[#16A34A]"}`}> Add Record</button></div>
+                            <div onClick={() => { setClose(!close); addRecord(localAmount, localCategory, localDate, localTime); }} className='mt-2'><button className={`btn btn-primary shadow-none border-none rounded-3xl w-full ${toggleExpense && "bg-[#16A34A] hover:bg-[#16A34A]"}`}> Add Record</button></div>
                         </div>
                     </div>
                     <div className='px-5 py-6 w-1/2 flex flex-col gap-8'>
