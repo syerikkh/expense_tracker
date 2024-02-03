@@ -4,8 +4,13 @@ import { AppIcon } from './Icons/AppIcon'
 import Link from 'next/link'
 import { BlueLabel } from './BlueLabel'
 import { Loading } from './Loading'
+import { EyeSlash } from './Icons/EyeSlash'
+import { EyeIcon } from './Icons/EyeIcon'
+
 
 export const LogIn = () => {
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     // const [input, setInput] = useState([]);
     const router = useRouter();
     const [email, setEmail] = useState('');
@@ -50,6 +55,11 @@ export const LogIn = () => {
 
         setEmail('');
         setPassword('');
+
+        const handleSubmit = (e) => {
+            e.preventDefault();
+            logIn();
+        };
     }
     return (
         <div className="w-[100vw] h-[100vh] flex justify-center items-center">
@@ -70,11 +80,15 @@ export const LogIn = () => {
                         <div>
                             <input value={email} onChange={e => setEmail(e.target.value)} type="text" placeholder="Email" className="p-2 border w-full rounded-md"></input>
                         </div>
-                        <div>
-                            <input value={password} onChange={e => setPassword(e.target.value)} type="text" placeholder="Password" className="p-2 border w-full rounded-md"></input>
+                        <div className='flex relative items-center'>
+                            <input value={password} onChange={e => setPassword(e.target.value)} type={showPassword ? "text" : "password"} placeholder="Password" className="p-2 border w-full rounded-md">
+                            </input>
+                            <button onClick={() => { setShowPassword(!showPassword) }} className='absolute right-2'>
+                                {showPassword ? <EyeSlash /> : <EyeIcon />}
+                            </button>
                         </div>
                         <div>
-                            <button onClick={logIn} className="bg-[#0166FF] text-white p-4 w-full rounded-3xl">Log in</button>
+                            <button type="submit" className="bg-[#0166FF] text-white p-4 w-full rounded-3xl">Log in</button>
 
                         </div>
                     </div>

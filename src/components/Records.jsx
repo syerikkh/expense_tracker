@@ -1,13 +1,48 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppIcon } from './Icons/AppIcon'
 import { Category } from './Category'
 import { PlusIcon } from './Icons/PlusIcon'
 import { RecordsPart2 } from './RecordsPart2'
 import Link from 'next/link'
 import { AddRecord } from './AddRecord'
+import { CategoryForm } from './CategoryForm'
+import axios from 'axios'
 
 export const Records = () => {
+    const [data, setData] = useState([]);
+    const fetchData = async () => {
+        try {
+            const response = await axios.get("http://localhost:8000/categories");
+            setData(response.data);
+        } catch (error) {
+            console.error(error)
+        }
+
+    }
+    useEffect(() => {
+        fetchData()
+    }, []);
+
+    // const deleteCategory = async (categoryId) => {
+    //     try {
+    //         await axios(`http://localhost:8000/categories/${categoryId}`);
+    //         fetchData();
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
+
+    const clearAllCategories = async () => {
+        try {
+            await axios.delete("http://localhost:8000/categories")
+            fetchData();
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const [addRecords, setAddRecords] = useState(false);
+    const [categoryForm, setCategoryForm] = useState(false);
     const [range, setRange] = useState();
     return (
         <>
@@ -16,8 +51,8 @@ export const Records = () => {
                     <div className='flex justify-between '>
                         <div className='flex gap-6'>
                             <AppIcon />
-                            <Link href={"/dashboard"}><button className='font-semibold'>Dashboard</button></Link>
-                            <h1>Records</h1>
+                            <Link href={"/dashboard"}><button>Dashboard</button></Link>
+                            <h1 className='font-semibold'>Records</h1>
                         </div>
                         <div>
                             <div className='p-2 bg-[#0166FF] text-white rounded-full'>+ Record</div>
@@ -51,10 +86,15 @@ export const Records = () => {
                         <div>
                             <div className='flex justify-between'>
                                 <p className='font-bold'>Category</p>
-                                <button className='text-[#1F2937]'>Clear</button>
+                                <button onClick={clearAllCategories} className='text-[#1F2937]'>Clear</button>
                             </div>
                             <div className='mt-4 flex flex-col gap-2'>
-                                <Category text="Food & Drinks" />
+                                {data.map((categoryData) => {
+                                    return (
+                                        <Category key={categoryData.id} text={categoryData.name} />
+                                    )
+                                })}
+                                {/* <Category text="Food & Drinks" />
                                 <Category text="Shopping" />
                                 <Category text="Housing" />
                                 <Category text="Transportation" />
@@ -64,10 +104,10 @@ export const Records = () => {
                                 <Category text="Financial expenses" />
                                 <Category text="Investments" />
                                 <Category text="Income" />
-                                <Category text="Others" />
+                                <Category text="Others" /> */}
                             </div>
                             <div>
-                                <button className='flex gap-2 justify-center items-center mt-2'>
+                                <button onClick={() => { setCategoryForm(!categoryForm) }} className='flex gap-2 justify-center items-center mt-2'>
                                     <PlusIcon />
                                     Add Category</button>
                             </div>
@@ -91,6 +131,7 @@ export const Records = () => {
 
             </div >
             {addRecords ? <AddRecord /> : <></>}
+            {categoryForm ? <CategoryForm /> : <></>}
         </>
     )
 }
