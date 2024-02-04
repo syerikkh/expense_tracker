@@ -4,11 +4,11 @@ import { GreenDot } from './Icons/GreenDot'
 import { LeadingIcon } from './Icons/LeadingIcon'
 import { BlueDot } from './Icons/BlueDot'
 import Link from 'next/link'
-
+// color = "[#F3F4F6]"
 export const Dashboard = () => {
 
     return (
-        <div className='w-[100vw] h-[100vh] flex flex-col bg-[#F3F4F6]'>
+        <div className='w-[100vw] h-[100vh] flex flex-col bg-black'>
             <div className='w-full px-[340px] py-6 bg-white'>
                 <div className='flex justify-between '>
                     <div className='flex gap-6'>
@@ -23,11 +23,11 @@ export const Dashboard = () => {
                 </div>
             </div>
             <div className='w-full px-[340px] mt-9'>
-                <div className='flex justify-between'>
+                <div className='grid grid-cols-3 gap-4'>
                     <div>
-                        <img src="Large.png" alt="" />
+                        <img className='w-full' src="Large.png" alt="" />
                     </div>
-                    <div className='w-96  h-[216px] rounded-2xl bg-white'>
+                    <div className='rounded-2xl bg-white'>
                         <div className='h-14 w-full border-b-2 rounded-t-2xl p-6 flex  items-center gap-3'>
                             <GreenDot />
                             <h1 className='font-semibold'>Your Income</h1>
@@ -43,7 +43,7 @@ export const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='w-96  h-[216px] rounded-2xl bg-white'>
+                    <div className='rounded-2xl bg-white'>
                         <div className='h-14 w-full border-b-2 rounded-t-2xl p-6 flex  items-center gap-3'>
                             <BlueDot />
                             <h1 className='font-semibold'>Total Expenses</h1>
@@ -59,9 +59,9 @@ export const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className='flex justify-between mt-9'>
-                    <div className='w-[588px] h-[322px] bg-white rounded-2xl'>
+
+
+                    <div className='bg-white rounded-2xl col-span-2'>
                         <div className='h-14 w-full p-6 border-b-2 flex items-center'>
                             <h1 className='font-semibold'>Income - Expense</h1>
                         </div>
@@ -75,7 +75,7 @@ export const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='w-[588px] h-[322px] bg-white rounded-2xl'>
+                    <div className=' bg-white rounded-2xl col-span-2'>
                         <div className='h-14 w-full p-6 border-b-2 flex items-center'>
                             <h1 className='font-semibold'>Income - Expense</h1>
                         </div>
@@ -89,6 +89,7 @@ export const Dashboard = () => {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div >
