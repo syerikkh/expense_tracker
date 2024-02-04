@@ -7,7 +7,6 @@ import Link from 'next/link'
 
 export const Dashboard = () => {
 
-
     return (
         <div className='w-[100vw] h-[100vh] flex flex-col bg-[#F3F4F6]'>
             <div className='w-full px-[340px] py-6 bg-white'>

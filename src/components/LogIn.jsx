@@ -6,6 +6,7 @@ import { BlueLabel } from './BlueLabel'
 import { Loading } from './Loading'
 import { EyeSlash } from './Icons/EyeSlash'
 import { EyeIcon } from './Icons/EyeIcon'
+import axios from 'axios'
 
 
 export const LogIn = () => {
@@ -33,24 +34,23 @@ export const LogIn = () => {
 
     const logIn = async () => {
         try {
-            const res = await fetch('http://localhost:8000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
-
-            if (res.ok) {
+            const res = await axios.post('http://localhost:8000/login', { email, password });
+            if (res.status === 200) {
                 console.log('Successfully logged in');
-                router.push("/dashboard");
+                const { token } = res.data.data;
+                localStorage.setItem("authToken", token)
+
+                console.log('token', token)
+                const { userId } = res.data.data;
+                router.push(`/dashboard/${userId}`);
 
             } else {
                 alert('Invalid email or password');
             }
 
         } catch (error) {
-            console.error(error)
+            console.error('Error during login:', error);
+            alert('Failed to log in. Please try again.');
         }
 
         setEmail('');

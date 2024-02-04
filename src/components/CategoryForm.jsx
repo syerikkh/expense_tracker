@@ -49,11 +49,6 @@ export const CategoryForm = () => {
                             <option>🍹</option>
                             <option>🚕</option>
                             <option>🪜</option>
-                            <option>🪜</option>
-                            <option>🪜</option>
-                            <option>🪜</option>
-                            <option>🪜</option>
-
                         </select>
                     </div>
                     <div className=''>
