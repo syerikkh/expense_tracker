@@ -56,10 +56,6 @@ export const LogIn = () => {
         setEmail('');
         setPassword('');
 
-        const handleSubmit = (e) => {
-            e.preventDefault();
-            logIn();
-        };
     }
     return (
         <div className="w-[100vw] h-[100vh] flex justify-center items-center">
@@ -88,7 +84,7 @@ export const LogIn = () => {
                             </button>
                         </div>
                         <div>
-                            <button type="submit" className="bg-[#0166FF] text-white p-4 w-full rounded-3xl">Log in</button>
+                            <button onClick={logIn} className="bg-[#0166FF] text-white p-4 w-full rounded-3xl">Log in</button>
 
                         </div>
                     </div>

@@ -21,7 +21,7 @@ export const AddRecord = () => {
         <div className={`w-full fixed top-0 h-screen flex justify-center items-center ${close && "hidden"}`} >
             <div className='w-screen h-screen bg-[#00000080] absolute left-0 bottom-0'>
             </div>
-            <div className='w-[792px] h-auto bg-white absolute top-1/4 rounded-lg flex flex-col'>
+            <div className='w-[792px] h-auto bg-white z-10 rounded-lg flex flex-col'>
                 <div className='h-17 w-full py-5 px-6 flex justify-between border-b-2'>
                     <h1 className='font-bold text-lg'>Add Record</h1>
                     <button onClick={() => setClose(!close)}>
