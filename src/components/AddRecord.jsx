@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Category } from './Category';
 import { RecordContext } from '@/context/RecordCont';
+import axios from 'axios';
 
 export const AddRecord = () => {
     const [close, setClose] = useState(false);
@@ -9,6 +10,8 @@ export const AddRecord = () => {
     const [localCategory, setLocalCategory] = useState('');
     const [localTime, setLocalTime] = useState('');
     const [localDate, setLocalDate] = useState('');
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
 
     const { amount, setAmount, time, setTime, date, setDate, category, setCategory, addRecord } = useContext(RecordContext);
 
@@ -16,6 +19,15 @@ export const AddRecord = () => {
     setCategory(localCategory);
     setDate(localDate);
     setTime(localTime);
+
+    const addTransaction = async () => {
+        try {
+            const res = await axios.post('http://localhost:8000/transactions', { name, localAmount, transaction_type: toggleExpense ? 'EXP' : 'INC', description, localDate, localTime })
+            console.log('datares', res.data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <div className={`w-full fixed top-0 h-screen flex justify-center items-center ${close && "hidden"}`} >
@@ -71,21 +83,17 @@ export const AddRecord = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div onClick={() => { setClose(!close); addRecord(localAmount, localCategory, localDate, localTime); }} className='mt-2'><button className={`btn btn-primary shadow-none border-none rounded-3xl w-full ${toggleExpense && "bg-[#16A34A] hover:bg-[#16A34A]"}`}> Add Record</button></div>
+                            <button onClick={() => { addTransaction(); setClose(!close) }} className={`btn btn-primary shadow-none border-none rounded-3xl w-full mt-2 ${toggleExpense && "bg-[#16A34A] hover:bg-[#16A34A]"}`}> Add Record</button>
                         </div>
                     </div>
                     <div className='px-5 py-6 w-1/2 flex flex-col gap-8'>
                         <div className='flex flex-col'>
-                            <label for="html">Payee</label>
-                            <select className="select select-bordered w-full mt-1">
-                                <option>Write Here</option>
-                                <option>Han Solo</option>
-                                <option>Greedo</option>
-                            </select>
+                            <label htmlFor="">Payee</label>
+                            <input type="text" className='border p-2 rounded-lg mt-2' value={name} onChange={e => setName(e.target.value)} placeholder='Write here' />
                         </div>
                         <div className='flex flex-col h-full gap-1'>
                             <label for="html">Note</label>
-                            <input type="text" placeholder='Write here' className='bg-[#F3F4F6] p-4 h-full rounded-lg border' />
+                            <input value={description} onChange={e => (setDescription(e.target.value))} type="text" placeholder='Write here' className='bg-[#F3F4F6] p-4 h-full rounded-lg border' />
                         </div>
                     </div>
                 </div>

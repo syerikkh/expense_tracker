@@ -4,11 +4,10 @@ import { GreenDot } from './Icons/GreenDot'
 import { LeadingIcon } from './Icons/LeadingIcon'
 import { BlueDot } from './Icons/BlueDot'
 import Link from 'next/link'
-// color = "[#F3F4F6]"
 export const Dashboard = () => {
 
     return (
-        <div className='w-[100vw] h-[100vh] flex flex-col bg-black'>
+        <div className='w-[100vw] h-[100vh] flex flex-col bg-[#F3F4F6]'>
             <div className='w-full px-[340px] py-6 bg-white'>
                 <div className='flex justify-between '>
                     <div className='flex gap-6'>
@@ -23,9 +22,12 @@ export const Dashboard = () => {
                 </div>
             </div>
             <div className='w-full px-[340px] mt-9'>
-                <div className='grid grid-cols-3 gap-4'>
-                    <div>
-                        <img className='w-full' src="Large.png" alt="" />
+                <div className='grid grid-cols-3 gap-6'>
+                    <div className='rounded-2xl bg-[#0166FF] p-6 flex items-end'>
+                        <div>
+                            <p className='text-gray-400'>Cash</p>
+                            <p className='text-2xl text-white font-bold'> 10,000,00</p>
+                        </div>
                     </div>
                     <div className='rounded-2xl bg-white'>
                         <div className='h-14 w-full border-b-2 rounded-t-2xl p-6 flex  items-center gap-3'>
@@ -59,9 +61,9 @@ export const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-
-
-                    <div className='bg-white rounded-2xl col-span-2'>
+                </div>
+                <div className='grid grid-cols-2 gap-6 mt-6'>
+                    <div className='bg-white rounded-2xl'>
                         <div className='h-14 w-full p-6 border-b-2 flex items-center'>
                             <h1 className='font-semibold'>Income - Expense</h1>
                         </div>
@@ -75,7 +77,7 @@ export const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className=' bg-white rounded-2xl col-span-2'>
+                    <div className=' bg-white rounded-2xl'>
                         <div className='h-14 w-full p-6 border-b-2 flex items-center'>
                             <h1 className='font-semibold'>Income - Expense</h1>
                         </div>
@@ -89,9 +91,9 @@ export const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-        </div >
+        </div>
+
     )
 }
