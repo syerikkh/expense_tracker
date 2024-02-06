@@ -9,6 +9,8 @@ import axios from 'axios'
 
 export const RecordsPart2 = () => {
     const [data, setData] = useState([]);
+    const [categories, setCategories] = useState([]);
+
     const fetchTransactionsData = async () => {
         const res = await axios.get("http://localhost:8000/transactions");
         setData(res.data);
@@ -17,12 +19,21 @@ export const RecordsPart2 = () => {
 
     useEffect(() => {
         fetchTransactionsData()
+        fetchCategoriesData()
     }, []);
 
-    const deleteTransactions = async () => {
+    const deleteAllTransactions = async () => {
         try {
             await axios.delete("http://localhost:8000/transactions");
             fetchTransactionsData();
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    const fetchCategoriesData = async () => {
+        try {
+            const res = await axios.get`http://localhost:8000/categories`;
+            setCategories(res.data)
         } catch (error) {
             console.error(error)
         }
@@ -54,7 +65,7 @@ export const RecordsPart2 = () => {
                                 <input type="checkbox" className="checkbox checkbox-primary" />
                                 <span className="label-text">Select all</span>
                             </div>
-                            <button onClick={deleteTransactions}>Clear</button>
+                            <button onClick={deleteAllTransactions}>Clear</button>
                         </label>
                     </div>
                 </div>
@@ -66,14 +77,25 @@ export const RecordsPart2 = () => {
                             <div className='bg-white px-6 py-3 rounded-lg '>
                                 <div className="form-control">
                                     <label className="cursor-pointer flex gap-2 items-center justify-between">
-                                        <div className='flex gap-4'>
+                                        <div className='flex gap-4 justify-center items-center'>
                                             <input type="checkbox" className="checkbox checkbox-primary" />
+                                            {categories.map((category) =>
+                                                category.id === transaction.category_id ? (
+                                                    <div key={category.id}>
+                                                        {category.category_image}
+                                                    </div>
+                                                ) : null
+                                            )}
                                             <div className="label-text flex flex-col text-xs">
-                                                <div className='font-semibold'>{transaction.name}</div>
+                                                {categories.map((category) => category.id === transaction.category_id ? <div>{category.name}</div> : null)}
+
                                                 <div>{transaction.transaction_time}</div>
                                             </div>
                                         </div>
-                                        <p className={` ${transaction.transaction_type === 'EXP' ? "text-red-500" : "text-[#23E01F]"} font-bold`}>{transaction.amount}₮</p>
+                                        <p className={` ${transaction.transaction_type === 'EXP' ? "text-red-500" : "text-[#23E01F]"} font-bold`}>
+                                            {`${transaction.transaction_type === 'EXP' ? "-" : "+"}`}
+                                            {transaction.amount}₮
+                                        </p>
                                     </label>
                                 </div>
                             </div>

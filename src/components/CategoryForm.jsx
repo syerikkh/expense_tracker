@@ -14,7 +14,7 @@ export const CategoryForm = () => {
 
     const categoryForm = async () => {
         try {
-            await axios.post("http://localhost:8000/categories", { name, description, category_image })
+            await axios.post("http://localhost:8000/categories", { name, category_image })
             setCloseForm(!closeForm);
             console.log("Category added successfully")
         } catch (error) {
@@ -28,7 +28,7 @@ export const CategoryForm = () => {
     return (
         <div className={`flex items-center justify-center fixed top-0 left-0 w-full h-screen ${closeForm && "hidden"}`}>
             <div className='w-screen h-full bg-[#00000080] absolute top-0 left-0'></div>
-            <div className='bg-white rounded-lg flex  z-10 h-60 w-[494px] flex flex-col'>
+            <div className='bg-white rounded-lg z-10 w-[494px] flex flex-col'>
                 <div className='h-1/4 w-full p-3 flex justify-between border-b-2'>
                     <h1 className='font-bold text-lg'>Add Category</h1>
                     <button onClick={() => { setCloseForm(!closeForm) }}>
@@ -37,9 +37,9 @@ export const CategoryForm = () => {
                         </svg>
                     </button>
                 </div>
-                <div className='p-3 flex justify-between gap-1 items-center'>
+                <div className='p-3 flex gap-2 items-center'>
                     <div>
-                        <select value={category_image} onChange={e => setCategory_image(e.target.value)} className="select select-bordered flex text-2xl">
+                        <select value={category_image} onChange={e => setCategory_image(e.target.value)} className="select text-center select-bordered flex text-2xl">
                             <option disabled selected>⌂</option>
                             <option>🍴</option>
                             <option>🛍</option>
@@ -51,14 +51,13 @@ export const CategoryForm = () => {
                             <option>🪜</option>
                         </select>
                     </div>
-                    <div className=''>
-                        <input value={name} onChange={e => setName(e.target.value)} className='w-full p-3 rounded-lg' type="text" name="" placeholder='Name' id="" />
-                        <input value={description} onChange={e => setDescription(e.target.value)} className='w-full p-3 rounded-lg' type="text" name="" placeholder='Description' id="" />
-                    </div>
+
+                    <input value={name} onChange={e => setName(e.target.value)} className='w-full p-3 rounded-lg' type="text" name="" placeholder='Name' id="" />
+
 
                 </div>
                 <div className='p-1'>
-                    <button onClick={categoryForm} className='btn btn-primary w-full'>Add to Category</button>
+                    <button onClick={categoryForm} className='btn btn-primary mb-2 w-full'>Add to Category</button>
                 </div>
             </div>
         </div>

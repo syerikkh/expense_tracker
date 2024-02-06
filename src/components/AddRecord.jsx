@@ -13,6 +13,8 @@ export const AddRecord = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [categoriesData, setCategoriesData] = useState([]);
+    const [token, setToken] = useState();
+    const [data, setData] = useState([]);
 
     const { amount, setAmount, time, setTime, date, setDate, category, setCategory, addRecord } = useContext(RecordContext);
 
@@ -21,12 +23,14 @@ export const AddRecord = () => {
     setDate(localDate);
     setTime(localTime);
 
+    const fetchTransactionData = async () => {
+        const res = await axios.get('http://localhost:8000/transactions');
+        setData(res.data)
+    }
+
     const addTransaction = async () => {
         try {
-            const selectedCategory = categoriesData.find(category => category.name === localCategory);
-            const categoryId = selectedCategory.length > 0 ? selectedCategory.id : null;
-            const res = await axios.post('http://localhost:8000/transactions', { name, amount: localAmount, transaction_type: toggleExpense ? 'INC' : 'EXP', description, date: localDate, time: localTime, category_id: categoryId })
-            console.log('datares', res.data)
+            const res = await axios.post('http://localhost:8000/transactions', { name, amount: localAmount, transaction_type: toggleExpense ? 'INC' : 'EXP', description, date: localDate, time: localTime, category_id: localCategory })
 
         } catch (error) {
             console.error(error)
@@ -42,9 +46,10 @@ export const AddRecord = () => {
         }
     }
     useEffect(() => {
-        categoryData()
+        categoryData();
+        fetchTransactionData();
     }, [])
-
+    console.log('blabla', data)
     return (
         <div className={`w-full fixed top-0 h-screen flex justify-center items-center ${close && "hidden"}`} >
             <div className='w-screen h-screen bg-[#00000080] absolute left-0 bottom-0'>
@@ -73,16 +78,11 @@ export const AddRecord = () => {
                                 </div>
                                 <div>
                                     <label for="html">Category</label>
-                                    <select value={localCategory} onChange={e => { setLocalCategory(e.target.value) }} className="select select-bordered w-full mt-1 text-[#94A3B8]">
-
-                                        {categoriesData.map((data) => {
-                                            return (
-                                                <>
-                                                    <option hidden>{toggleExpense ? "Find or choose category" : "Choose"}</option>
-                                                    <option value={data.id}>{data.name}</option>
-                                                </>
-                                            )
-                                        })}
+                                    <select value={localCategory} onChange={e => setLocalCategory(e.target.value)} className="select select-bordered w-full mt-1 text-[#94A3B8]">
+                                        <option hidden>{toggleExpense ? "Find or choose category" : "Choose"}</option>
+                                        {categoriesData.map((data) => (
+                                            <option key={data.id} value={data.id}>{data.name}</option>
+                                        ))}
                                     </select>
 
                                 </div>
