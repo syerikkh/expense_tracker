@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Category } from './Category';
 import { RecordContext } from '@/context/RecordCont';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export const AddRecord = () => {
     const [close, setClose] = useState(false);
@@ -16,6 +17,9 @@ export const AddRecord = () => {
     const [token, setToken] = useState();
     const [data, setData] = useState([]);
 
+    const router = useRouter();
+    const { userId } = router.query;
+
     const { amount, setAmount, time, setTime, date, setDate, category, setCategory, addRecord } = useContext(RecordContext);
 
     setAmount(localAmount);
@@ -23,14 +27,10 @@ export const AddRecord = () => {
     setDate(localDate);
     setTime(localTime);
 
-    const fetchTransactionData = async () => {
-        const res = await axios.get('http://localhost:8000/transactions');
-        setData(res.data)
-    }
 
     const addTransaction = async () => {
         try {
-            const res = await axios.post('http://localhost:8000/transactions', { name, amount: localAmount, transaction_type: toggleExpense ? 'INC' : 'EXP', description, date: localDate, time: localTime, category_id: localCategory })
+            const res = await axios.post('http://localhost:8000/transactions', { user_id: userId, name, amount: localAmount, transaction_type: toggleExpense ? 'INC' : 'EXP', description, date: localDate, time: localTime, category_id: localCategory })
 
         } catch (error) {
             console.error(error)
@@ -47,9 +47,8 @@ export const AddRecord = () => {
     }
     useEffect(() => {
         categoryData();
-        fetchTransactionData();
     }, [])
-    console.log('blabla', data)
+
     return (
         <div className={`w-full fixed top-0 h-screen flex justify-center items-center ${close && "hidden"}`} >
             <div className='w-screen h-screen bg-[#00000080] absolute left-0 bottom-0'>
