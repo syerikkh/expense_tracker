@@ -39,8 +39,8 @@ export const LogIn = () => {
                 console.log('Successfully logged in');
                 const { token } = res.data.data;
                 localStorage.setItem("authToken", token)
-
                 console.log('token', token)
+
                 const { userId } = res.data.data;
                 router.push(`/dashboard/${userId}`);
 

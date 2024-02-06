@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Category } from './Category';
 import { RecordContext } from '@/context/RecordCont';
 import axios from 'axios';
@@ -12,6 +12,7 @@ export const AddRecord = () => {
     const [localDate, setLocalDate] = useState('');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [categoriesData, setCategoriesData] = useState([]);
 
     const { amount, setAmount, time, setTime, date, setDate, category, setCategory, addRecord } = useContext(RecordContext);
 
@@ -22,12 +23,27 @@ export const AddRecord = () => {
 
     const addTransaction = async () => {
         try {
-            const res = await axios.post('http://localhost:8000/transactions', { name, amount: localAmount, transaction_type: toggleExpense ? 'EXP' : 'INC', description, date: localDate, time: localTime })
+            const selectedCategory = categoriesData.find(category => category.name === localCategory);
+            const categoryId = selectedCategory.length > 0 ? selectedCategory.id : null;
+            const res = await axios.post('http://localhost:8000/transactions', { name, amount: localAmount, transaction_type: toggleExpense ? 'INC' : 'EXP', description, date: localDate, time: localTime, category_id: categoryId })
             console.log('datares', res.data)
+
         } catch (error) {
             console.error(error)
         }
     }
+    const categoryData = async () => {
+        try {
+            const res = await axios.get("http://localhost:8000/categories");
+            setCategoriesData(res.data)
+            console.log('category id', res.data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    useEffect(() => {
+        categoryData()
+    }, [])
 
     return (
         <div className={`w-full fixed top-0 h-screen flex justify-center items-center ${close && "hidden"}`} >
@@ -58,19 +74,17 @@ export const AddRecord = () => {
                                 <div>
                                     <label for="html">Category</label>
                                     <select value={localCategory} onChange={e => { setLocalCategory(e.target.value) }} className="select select-bordered w-full mt-1 text-[#94A3B8]">
-                                        <option value="" disabled>{toggleExpense ? "Find or choose category" : "Choose"}</option>
-                                        <option>Food</option>
-                                        <option>Shopping</option>
-                                        <option>Housing</option>
-                                        <option>Transportation</option>
-                                        <option>Vehicle</option>
-                                        <option>Life & Entertainment</option>
-                                        <option>Communication, PC</option>
-                                        <option>Financial expenses</option>
-                                        <option>Investments</option>
-                                        <option>Income</option>
-                                        <option>Others</option>
+
+                                        {categoriesData.map((data) => {
+                                            return (
+                                                <>
+                                                    <option hidden>{toggleExpense ? "Find or choose category" : "Choose"}</option>
+                                                    <option value={data.id}>{data.name}</option>
+                                                </>
+                                            )
+                                        })}
                                     </select>
+
                                 </div>
                                 <div className='flex gap-2'>
                                     <div className='flex flex-col'>
@@ -88,7 +102,7 @@ export const AddRecord = () => {
                     </div>
                     <div className='px-5 py-6 w-1/2 flex flex-col gap-8'>
                         <div className='flex flex-col'>
-                            <label for="">Payee</label>
+                            <label htmlFor="">Payee</label>
                             <input type="text" className='border p-2 rounded-lg mt-2' value={name} onChange={e => setName(e.target.value)} placeholder='Write here' />
                         </div>
                         <div className='flex flex-col h-full gap-1'>

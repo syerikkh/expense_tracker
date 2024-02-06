@@ -9,7 +9,7 @@ export const CategoryForm = () => {
     const [description, setDescription] = useState();
 
     const fetchData = async () => {
-        const response = await axios("http://localhost:8000/categories")
+        const response = await axios.get("http://localhost:8000/categories")
     }
 
     const categoryForm = async () => {

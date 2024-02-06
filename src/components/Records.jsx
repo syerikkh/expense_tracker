@@ -7,19 +7,32 @@ import Link from 'next/link'
 import { AddRecord } from './AddRecord'
 import { CategoryForm } from './CategoryForm'
 import axios from 'axios'
+import { jwtDecode } from 'jwt-decode'
 
 export const Records = () => {
+    const [userId, setUserId] = useState(null);
     const [data, setData] = useState([]);
+    const [decodedToken, setDecodedToken] = useState();
+
+    const [token, setToken] = useState();
+
+
     const fetchData = async () => {
         try {
             const response = await axios.get("http://localhost:8000/categories");
             setData(response.data);
+
         } catch (error) {
             console.error(error)
         }
 
     }
     useEffect(() => {
+        const token = localStorage.getItem("authToken");
+        setToken(token);
+        const decodedToken = jwtDecode(token);
+        setDecodedToken(decodedToken);
+        setUserId(decodedToken.userId)
         fetchData()
     }, []);
 
@@ -44,6 +57,8 @@ export const Records = () => {
     const [addRecords, setAddRecords] = useState(false);
     const [categoryForm, setCategoryForm] = useState(false);
     const [range, setRange] = useState();
+
+
     return (
         <>
             <div className='w-[100vw] h-screen flex flex-col bg-[#F3F4F6]'>

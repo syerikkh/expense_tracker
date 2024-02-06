@@ -19,6 +19,15 @@ export const RecordsPart2 = () => {
         fetchTransactionsData()
     }, []);
 
+    const deleteTransactions = async () => {
+        try {
+            await axios.delete("http://localhost:8000/transactions");
+            fetchTransactionsData();
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return (
         <div className='w-full flex flex-col'>
             <div className='flex justify-between'>
@@ -40,9 +49,12 @@ export const RecordsPart2 = () => {
             <div className='flex flex-col gap-6 mt-4'>
                 <div className='bg-white px-6 py-2 rounded-lg'>
                     <div className="form-control">
-                        <label className="cursor-pointer flex gap-2 items-center">
-                            <input type="checkbox" className="checkbox checkbox-primary" />
-                            <span className="label-text">Select all</span>
+                        <label className="cursor-pointer flex gap-2 items-center justify-between">
+                            <div className='flex gap-2'>
+                                <input type="checkbox" className="checkbox checkbox-primary" />
+                                <span className="label-text">Select all</span>
+                            </div>
+                            <button onClick={deleteTransactions}>Clear</button>
                         </label>
                     </div>
                 </div>
@@ -51,8 +63,20 @@ export const RecordsPart2 = () => {
                 <div>
                     {data.map((transaction) => (
                         <div key={transaction.id} className='flex flex-col gap-3'>
-                            <IncomeExpense day={transaction.transaction_date} />
-                            <Select text={transaction.name} time={transaction.transaction_time} expense={transaction.amount} />
+                            <div className='bg-white px-6 py-3 rounded-lg '>
+                                <div className="form-control">
+                                    <label className="cursor-pointer flex gap-2 items-center justify-between">
+                                        <div className='flex gap-4'>
+                                            <input type="checkbox" className="checkbox checkbox-primary" />
+                                            <div className="label-text flex flex-col text-xs">
+                                                <div className='font-semibold'>{transaction.name}</div>
+                                                <div>{transaction.transaction_time}</div>
+                                            </div>
+                                        </div>
+                                        <p className={` ${transaction.transaction_type === 'EXP' ? "text-red-500" : "text-[#23E01F]"} font-bold`}>{transaction.amount}₮</p>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
                     ))}
