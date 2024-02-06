@@ -1,20 +1,23 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { LeftArrowIcon } from './Icons/LeftArrowIcon'
 import { RightArrowIcon } from './Icons/RightArrowIcon'
 import { DownIcon } from './Icons/DownIcon'
 import { IncomeExpense } from './IncomeExpense'
 import { Select } from './Select'
 import { RecordContext } from '@/context/RecordCont'
+import axios from 'axios'
 
 export const RecordsPart2 = () => {
-    const { amount,
-        setAmount,
-        category,
-        setCategory,
-        date,
-        setDate,
-        time,
-        setTime, addRecord } = useContext(RecordContext);
+    const [data, setData] = useState([]);
+    const fetchTransactionsData = async () => {
+        const res = await axios.get("http://localhost:8000/transactions");
+        setData(res.data);
+        console.log('data', res.data)
+    };
+
+    useEffect(() => {
+        fetchTransactionsData()
+    }, []);
 
     return (
         <div className='w-full flex flex-col'>
@@ -43,24 +46,35 @@ export const RecordsPart2 = () => {
                         </label>
                     </div>
                 </div>
-                <div className='flex flex-col gap-3'>
-                    {/* <IncomeExpense day={date} />
+
+
+                <div>
+                    {data.map((transaction) => (
+                        <div key={transaction.id} className='flex flex-col gap-3'>
+                            <IncomeExpense day={transaction.transaction_date} />
+                            <Select text={transaction.name} time={transaction.transaction_time} expense={transaction.amount} />
+                        </div>
+
+                    ))}
+                </div>
+
+                {/* <IncomeExpense day={date} />
                     <Select text={category} time={time} expense={amount} /> */}
-                    {/* <Select text="Food & Drinks" time="14:00" expense="-1,000" />
+                {/* <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" />
                     <Select text="Food & Drinks" time="14:00" expense="-1,000" /> */}
-                </div>
-                <div className='flex flex-col gap-3'>
-                    {/* <IncomeExpense day="Yesterday" /> */}
-                    {/* <Select text="Food & Drinks" time="14:00" expense="-1,000" />
-                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
-                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
-                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
-                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
-                    <Select text="Food & Drinks" time="14:00" expense="-1,000" /> */}
-                </div>
             </div>
-        </div >
+            <div className='flex flex-col gap-3'>
+                {/* <IncomeExpense day="Yesterday" /> */}
+                {/* <Select text="Food & Drinks" time="14:00" expense="-1,000" />
+                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
+                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
+                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
+                    <Select text="Food & Drinks" time="14:00" expense="-1,000" />
+                    <Select text="Food & Drinks" time="14:00" expense="-1,000" /> */}
+            </div>
+        </div>
+
     )
 }

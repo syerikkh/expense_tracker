@@ -22,7 +22,7 @@ export const AddRecord = () => {
 
     const addTransaction = async () => {
         try {
-            const res = await axios.post('http://localhost:8000/transactions', { name, localAmount, transaction_type: toggleExpense ? 'EXP' : 'INC', description, localDate, localTime })
+            const res = await axios.post('http://localhost:8000/transactions', { name, amount: localAmount, transaction_type: toggleExpense ? 'EXP' : 'INC', description, date: localDate, time: localTime })
             console.log('datares', res.data)
         } catch (error) {
             console.error(error)
@@ -88,7 +88,7 @@ export const AddRecord = () => {
                     </div>
                     <div className='px-5 py-6 w-1/2 flex flex-col gap-8'>
                         <div className='flex flex-col'>
-                            <label htmlFor="">Payee</label>
+                            <label for="">Payee</label>
                             <input type="text" className='border p-2 rounded-lg mt-2' value={name} onChange={e => setName(e.target.value)} placeholder='Write here' />
                         </div>
                         <div className='flex flex-col h-full gap-1'>

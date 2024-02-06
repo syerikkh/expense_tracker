@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppIcon } from './Icons/AppIcon'
 import { GreenDot } from './Icons/GreenDot'
 import { LeadingIcon } from './Icons/LeadingIcon'
 import { BlueDot } from './Icons/BlueDot'
 import Link from 'next/link'
+import axios from 'axios'
 export const Dashboard = () => {
+    const [userId, setUserId] = useState(null);
+
+    const fetchProtectedData = async () => {
+        try {
+            const token = localStorage.getItem("authToken")
+            console.log("token", token)
+            const res = await axios.get("http://localhost:8000/profile", {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            setUserId(res.data.message.split(', ')[1]);
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    useEffect(() => {
+        fetchProtectedData()
+    }, []);
 
     return (
         <div className='w-[100vw] h-[100vh] flex flex-col bg-[#F3F4F6]'>
@@ -13,7 +31,7 @@ export const Dashboard = () => {
                     <div className='flex gap-6'>
                         <AppIcon />
                         <h1 className='font-semibold'>Dashboard</h1>
-                        <Link href={"/records"}><button>Records</button></Link>
+                        <Link href={`/records/${userId}`}><button>Records</button></Link>
                     </div>
                     <div>
                         <div className='p-2 bg-[#0166FF] text-white rounded-full'>+ Record</div>

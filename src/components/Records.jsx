@@ -51,7 +51,7 @@ export const Records = () => {
                     <div className='flex justify-between '>
                         <div className='flex gap-6'>
                             <AppIcon />
-                            <Link href={"/dashboard"}><button>Dashboard</button></Link>
+                            <Link href={`/dashboard/${userId}`}><button>Dashboard</button></Link>
                             <h1 className='font-semibold'>Records</h1>
                         </div>
                         <div>
