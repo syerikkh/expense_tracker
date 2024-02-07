@@ -60,6 +60,8 @@ export const RecordsPart2 = () => {
         }
     }
 
+    // const filteredTransactions = data.filter((transaction => transaction.user_id !== userId));
+    // console.log('filtered', filteredTransactions)
     return (
         <div className='w-full flex flex-col'>
             <div className='flex justify-between'>
@@ -94,33 +96,35 @@ export const RecordsPart2 = () => {
 
                 <div>
                     {data.map((transaction) => (
-                        <div key={transaction.id} className='flex flex-col gap-3'>
-                            <div className='bg-white px-6 py-3 rounded-lg '>
-                                <div className="form-control">
-                                    <label className="cursor-pointer flex gap-2 items-center justify-between">
-                                        <div className='flex gap-4 justify-center items-center'>
-                                            <input type="checkbox" className="checkbox checkbox-primary" />
-                                            {categories.map((category) =>
-                                                category.id === transaction.category_id ? (
-                                                    <div key={category.id}>
-                                                        {category.category_image}
-                                                    </div>
-                                                ) : null
-                                            )}
-                                            <div className="label-text flex flex-col text-xs">
-                                                {categories.map((category) => category.id === transaction.category_id ? <div>{category.name}</div> : null)}
+                        transaction.user_id === userId ? (
+                            <div key={transaction.id} className='flex flex-col gap-3'>
+                                <div className='bg-white px-6 py-3 rounded-lg '>
+                                    <div className="form-control">
+                                        <label className="cursor-pointer flex gap-2 items-center justify-between">
+                                            <div className='flex gap-4 justify-center items-center'>
+                                                <input type="checkbox" className="checkbox checkbox-primary" />
+                                                {categories.map((category) =>
+                                                    category.id === transaction.category_id ? (
+                                                        <div key={category.id}>
+                                                            {category.category_image}
+                                                        </div>
+                                                    ) : null
+                                                )}
+                                                <div className="label-text flex flex-col text-xs">
+                                                    {categories.map((category) => category.id === transaction.category_id ? <div>{category.name}</div> : null)}
 
-                                                <div>{transaction.transaction_time}</div>
+                                                    <div>{transaction.transaction_time}</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <p className={` ${transaction.transaction_type === 'EXP' ? "text-red-500" : "text-[#23E01F]"} font-bold`}>
-                                            {`${transaction.transaction_type === 'EXP' ? "-" : "+"}`}
-                                            {transaction.amount}₮
-                                        </p>
-                                    </label>
+                                            <p className={` ${transaction.transaction_type === 'EXP' ? "text-red-500" : "text-[#23E01F]"} font-bold`}>
+                                                {`${transaction.transaction_type === 'EXP' ? "-" : "+"}`}
+                                                {transaction.amount}₮
+                                            </p>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        ) : null
 
                     ))}
                 </div>

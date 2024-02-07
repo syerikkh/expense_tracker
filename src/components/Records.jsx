@@ -54,7 +54,10 @@ export const Records = () => {
 
     const clearAllCategories = async () => {
         try {
-            await axios.delete("http://localhost:8000/categories")
+            const token = localStorage.getItem("authToken");
+            await axios.delete("http://localhost:8000/categories", {
+                headers: { Authorization: `Bearer ${token}` }
+            })
             fetchData();
         } catch (error) {
             console.error(error)
@@ -111,22 +114,9 @@ export const Records = () => {
                                 <button onClick={clearAllCategories} className='text-[#1F2937]'>Clear</button>
                             </div>
                             <div className='mt-4 flex flex-col gap-2'>
-                                {data.map((categoryData) => {
-                                    return (
-                                        <Category key={categoryData.id} text={categoryData.name} />
-                                    )
-                                })}
-                                {/* <Category text="Food & Drinks" />
-                                <Category text="Shopping" />
-                                <Category text="Housing" />
-                                <Category text="Transportation" />
-                                <Category text="Vehicle" />
-                                <Category text="Life & Entertainment" />
-                                <Category text="Communication, PC" />
-                                <Category text="Financial expenses" />
-                                <Category text="Investments" />
-                                <Category text="Income" />
-                                <Category text="Others" /> */}
+                                {data.map((categoryData) =>
+                                    <Category key={categoryData.id} text={categoryData.name} />
+                                )}
                             </div>
                             <div>
                                 <button onClick={() => { setCategoryForm(!categoryForm) }} className='flex gap-2 justify-center items-center mt-2'>

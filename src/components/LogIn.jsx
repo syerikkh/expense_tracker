@@ -12,25 +12,14 @@ import axios from 'axios'
 export const LogIn = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    // const [input, setInput] = useState([]);
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const fetchData = async () => {
-        const res = await fetch('http://localhost:8000/login');
-        const data = await res.json();
-    }
-    useEffect(() => {
-        fetchData()
-    }, []);
 
-    // const getInput = () => {
-    //     setInput({ email, password })
-    // }
-    // useMemo(() => {
-    //     getInput()
-    // }, [email, password])
+    useEffect(() => {
+        localStorage.removeItem("authToken")
+    }, []);
 
     const logIn = async () => {
         try {
@@ -38,16 +27,14 @@ export const LogIn = () => {
             if (res.status === 200) {
                 console.log('Successfully logged in');
                 const { token } = res.data.data;
-                localStorage.setItem("authToken", token)
-                console.log('token', token)
+                localStorage.setItem('authToken', token);
+                console.log('Token:', token);
 
                 const { userId } = res.data.data;
                 router.push(`/dashboard/${userId}`);
-
             } else {
                 alert('Invalid email or password');
             }
-
         } catch (error) {
             console.error('Error during login:', error);
             alert('Failed to log in. Please try again.');
@@ -55,8 +42,7 @@ export const LogIn = () => {
 
         setEmail('');
         setPassword('');
-
-    }
+    };
     return (
         <div className="w-[100vw] h-[100vh] flex justify-center items-center">
             <div className="w-1/2 h-full bg-[#0166FF] flex justify-center items-center">

@@ -5,24 +5,38 @@ import { LeadingIcon } from './Icons/LeadingIcon'
 import { BlueDot } from './Icons/BlueDot'
 import Link from 'next/link'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 export const Dashboard = () => {
+    const router = useRouter();
     const [userId, setUserId] = useState(null);
 
-    const fetchProtectedData = async () => {
-        try {
-            const token = localStorage.getItem("authToken")
-            console.log("token", token)
-            const res = await axios.get("http://localhost:8000/profile", {
-                headers: { Authorization: `Bearer ${token}` }
-            })
-            setUserId(res.data.message.split(', ')[1]);
-        } catch (error) {
-            console.error(error)
-        }
-    }
     useEffect(() => {
-        fetchProtectedData()
-    }, []);
+        const fetchProtectedData = async () => {
+            try {
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    alert("Please log in");
+                    router.push('/');
+                    return;
+                }
+                console.log('token', token);
+                const res = await axios.get('http://localhost:8000/profile', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setUserId(res.data.message.split(', ')[1]);
+            } catch (error) {
+                console.error(error);
+                if (error.response && error.response.status === 500) {
+
+                    localStorage.removeItem('authToken');
+                    alert("please log in again")
+                    router.push('/');
+                }
+            }
+        };
+        fetchProtectedData();
+    }, [router]);
+
 
     return (
         <div className='w-[100vw] h-[100vh] flex flex-col bg-[#F3F4F6]'>
