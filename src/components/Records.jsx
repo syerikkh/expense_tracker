@@ -19,7 +19,14 @@ export const Records = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get("http://localhost:8000/categories");
+            const token = localStorage.getItem("authToken");
+            if (!token) {
+                console.error("Token not found");
+                return;
+            }
+            const response = await axios.get("http://localhost:8000/categories", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setData(response.data);
 
         } catch (error) {

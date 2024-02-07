@@ -6,15 +6,29 @@ import { IncomeExpense } from './IncomeExpense'
 import { Select } from './Select'
 import { RecordContext } from '@/context/RecordCont'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 
 export const RecordsPart2 = () => {
     const [data, setData] = useState([]);
     const [categories, setCategories] = useState([]);
 
+    const router = useRouter();
+    const { userId } = router.query;
+
+
     const fetchTransactionsData = async () => {
-        const res = await axios.get("http://localhost:8000/transactions");
-        setData(res.data);
-        console.log('data', res.data)
+        try {
+            const token = localStorage.getItem("authToken");
+            const res = await axios.get(`http://localhost:8000/transactions?user_id=${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setData(res.data);
+            console.log('data', res.data);
+        } catch (error) {
+            console.error("Error fetching transactions:", error);
+        }
     };
 
     useEffect(() => {
@@ -32,7 +46,14 @@ export const RecordsPart2 = () => {
     }
     const fetchCategoriesData = async () => {
         try {
-            const res = await axios.get`http://localhost:8000/categories`;
+            const token = localStorage.getItem("authToken")
+            if (!token) {
+                console.log("token not found");
+                return
+            }
+            const res = await axios.get(`http://localhost:8000/categories?user_id=${userId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setCategories(res.data)
         } catch (error) {
             console.error(error)

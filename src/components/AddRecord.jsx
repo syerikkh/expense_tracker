@@ -30,7 +30,10 @@ export const AddRecord = () => {
 
     const addTransaction = async () => {
         try {
-            const res = await axios.post('http://localhost:8000/transactions', { user_id: userId, name, amount: localAmount, transaction_type: toggleExpense ? 'INC' : 'EXP', description, date: localDate, time: localTime, category_id: localCategory })
+            const token = localStorage.getItem("authToken");
+            const res = await axios.post(`http://localhost:8000/transactions?user_id=${userId}`, { user_id: userId, name, amount: localAmount, transaction_type: toggleExpense ? 'INC' : 'EXP', description, date: localDate, time: localTime, category_id: localCategory }, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
 
         } catch (error) {
             console.error(error)
@@ -38,7 +41,14 @@ export const AddRecord = () => {
     }
     const categoryData = async () => {
         try {
-            const res = await axios.get("http://localhost:8000/categories");
+            const token = localStorage.getItem("authToken");
+            if (!token) {
+                console.log("token not found")
+                return
+            }
+            const res = await axios.get(`http://localhost:8000/categories?user_id=${userId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setCategoriesData(res.data)
             console.log('category id', res.data)
         } catch (error) {

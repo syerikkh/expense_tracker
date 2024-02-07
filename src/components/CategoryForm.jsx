@@ -9,12 +9,32 @@ export const CategoryForm = () => {
     const [description, setDescription] = useState();
 
     const fetchData = async () => {
-        const response = await axios.get("http://localhost:8000/categories")
+        try {
+            const token = localStorage.getItem("authToken");
+            if (!token) {
+                console.error("Token not found");
+                return;
+            }
+            const response = await axios.get("http://localhost:8000/categories", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+        }
     }
 
     const categoryForm = async () => {
         try {
-            await axios.post("http://localhost:8000/categories", { name, category_image })
+            const token = localStorage.getItem("authToken");
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+            await axios.post("http://localhost:8000/categories", { name, category_image }, config)
             setCloseForm(!closeForm);
             console.log("Category added successfully")
         } catch (error) {
