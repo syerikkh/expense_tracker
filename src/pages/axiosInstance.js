@@ -1,12 +1,25 @@
-import axios from 'axios';
+// import axios from 'axios';
+// import { useEffect, useState } from 'react';
 
-const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8000',
-    timeout: 5000,
-    headers: {
-        'Authorization': 'Bearer',
-    },
-});
+// const createAxiosInstance = () => {
+//     const [token, setToken] = useState();
 
-export default axiosInstance;
+//     useEffect(() => {
+//         setToken(localStorage.getItem("authToken"))
+//     }, [])
+
+//     const axiosInstance = axios.create({
+//         baseURL: 'http://localhost:8000',
+//         timeout: 5000,
+//         headers: {
+//             'Authorization': `Bearer ${token}`
+//         },
+//     });
+
+//     return axiosInstance;
+// }
+
+
+
+// export default createAxiosInstance;
 

@@ -71,7 +71,7 @@ export const Records = () => {
 
     return (
         <>
-            <div className='w-[100vw] flex flex-col bg-[#F3F4F6]'>
+            <div className='w-[100vw] h-screen flex flex-col bg-[#F3F4F6]'>
                 <div className='w-full px-[340px] py-6 bg-white'>
                     <div className='flex justify-between '>
                         <div className='flex gap-6'>

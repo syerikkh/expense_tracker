@@ -6,6 +6,9 @@ import { BlueDot } from './Icons/BlueDot'
 import Link from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import axiosInstance from '@/pages/axiosInstance'
+import AxiosInstance from '@/pages/axiosInstance'
+import createAxiosInstance from '@/pages/axiosInstance'
 export const Dashboard = () => {
     const router = useRouter();
     const [userId, setUserId] = useState(null);
@@ -19,19 +22,17 @@ export const Dashboard = () => {
                     router.push('/');
                     return;
                 }
-                console.log('token', token);
+
+                // const res = await axiosInstance.get("/profile");
+
                 const res = await axios.get('http://localhost:8000/profile', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
+                console.log('tokenasdasd', token);
                 setUserId(res.data.message.split(', ')[1]);
             } catch (error) {
                 console.error(error);
-                if (error.response && error.response.status === 500) {
 
-                    localStorage.removeItem('authToken');
-                    alert("please log in again")
-                    router.push('/');
-                }
             }
         };
         fetchProtectedData();
