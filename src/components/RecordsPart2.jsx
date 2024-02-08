@@ -104,7 +104,7 @@ export const RecordsPart2 = () => {
                                             <div className='flex gap-4 justify-center items-center'>
                                                 <input type="checkbox" className="checkbox checkbox-primary" />
                                                 {categories.map((category) =>
-                                                    category.id === transaction.category_id && category.user_id === userId ? (
+                                                    category.id === transaction.category_id ? (
                                                         <div key={category.id}>
                                                             {category.category_image}
                                                         </div>

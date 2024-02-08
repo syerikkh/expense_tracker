@@ -8,6 +8,7 @@ import { AddRecord } from './AddRecord'
 import { CategoryForm } from './CategoryForm'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
+import { useRouter } from 'next/router'
 
 export const Records = () => {
     const [userId, setUserId] = useState(null);
@@ -15,7 +16,7 @@ export const Records = () => {
     const [decodedToken, setDecodedToken] = useState();
 
     const [token, setToken] = useState();
-
+    const router = useRouter();
 
     const fetchData = async () => {
         try {
@@ -36,11 +37,23 @@ export const Records = () => {
     }
     useEffect(() => {
         const token = localStorage.getItem("authToken");
+        if (!token) {
+            router.push('/')
+            alert("Please log in")
+            console.log("Token not found");
+            return;
+        }
         setToken(token);
-        const decodedToken = jwtDecode(token);
-        setDecodedToken(decodedToken);
-        setUserId(decodedToken.userId)
-        fetchData()
+        try {
+            const decodedToken = jwtDecode(token);
+            setDecodedToken(decodedToken);
+            setUserId(decodedToken.userId)
+            fetchData()
+
+        } catch (error) {
+            console.error("INvalidd token", error)
+        }
+
     }, []);
 
     // const deleteCategory = async (categoryId) => {

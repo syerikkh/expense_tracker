@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 axios.defaults.baseURL = 'http://localhost:8000';
 
 export const CategoryForm = () => {
@@ -8,6 +9,9 @@ export const CategoryForm = () => {
     const [category_image, setCategory_image] = useState();
     const [description, setDescription] = useState();
 
+    const router = useRouter();
+    const { userId } = router.query;
+
     const fetchData = async () => {
         try {
             const token = localStorage.getItem("authToken");
@@ -15,6 +19,7 @@ export const CategoryForm = () => {
                 console.error("Token not found");
                 return;
             }
+
             const response = await axios.get("http://localhost:8000/categories", {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -34,7 +39,7 @@ export const CategoryForm = () => {
                     Authorization: `Bearer ${token}`
                 }
             };
-            await axios.post("http://localhost:8000/categories", { name, category_image }, config)
+            await axios.post("http://localhost:8000/categories", { userId, name, category_image }, config)
             setCloseForm(!closeForm);
             console.log("Category added successfully")
         } catch (error) {

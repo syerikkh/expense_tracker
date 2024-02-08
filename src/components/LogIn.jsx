@@ -32,6 +32,7 @@ export const LogIn = () => {
 
                 const { userId } = res.data.data;
                 router.push(`/dashboard/${userId}`);
+
             } else {
                 alert('Invalid email or password');
             }
