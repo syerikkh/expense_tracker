@@ -3,6 +3,7 @@ import { Category } from './Category';
 import { RecordContext } from '@/context/RecordCont';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { CategoryForm } from './CategoryForm';
 
 export const AddRecord = () => {
     const [close, setClose] = useState(false);
@@ -16,6 +17,7 @@ export const AddRecord = () => {
     const [categoriesData, setCategoriesData] = useState([]);
     const [token, setToken] = useState();
     const [data, setData] = useState([]);
+    const [showCategoryForm, setShowCategoryForm] = useState(false);
 
     const router = useRouter();
     const { userId } = router.query;
@@ -32,7 +34,7 @@ export const AddRecord = () => {
         try {
             const token = localStorage.getItem("authToken");
             const res = await axios.post(`http://localhost:8000/transactions?user_id=${userId}`, { user_id: userId, name, amount: localAmount, transaction_type: toggleExpense ? 'INC' : 'EXP', description, date: localDate, time: localTime, category_id: localCategory }, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { "Authorization": `Bearer ${token}` }
             })
 
         } catch (error) {
@@ -47,7 +49,7 @@ export const AddRecord = () => {
                 return
             }
             const res = await axios.get(`http://localhost:8000/categories?user_id=${userId}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { 'Authorization': `Bearer ${token}` }
             });
             setCategoriesData(res.data)
             console.log('category id', res.data)
@@ -87,13 +89,21 @@ export const AddRecord = () => {
                                 </div>
                                 <div>
                                     <label for="html">Category</label>
-                                    <select value={localCategory} onChange={e => setLocalCategory(e.target.value)} className="select select-bordered w-full mt-1 text-[#94A3B8]">
+                                    <select value={localCategory} onChange={e => {
+                                        if (e.target.value === 'add') {
+                                            setShowCategoryForm(true);
+                                        } else {
+                                            setLocalCategory(e.target.value);
+                                        }
+                                    }} className="select select-bordered w-full mt-1 text-[#94A3B8]">
                                         <option hidden>{toggleExpense ? "Find or choose category" : "Choose"}</option>
-                                        {categoriesData.map((data) => (
-                                            <option key={data.id} value={data.id}>{data.name}</option>
-                                        ))}
+                                        {categoriesData.map((category) => category.user_id === userId ?
+                                            <option key={category.id} value={category.id}>{category.name}</option>
+                                            : null
+                                        )}
+                                        <option value="add">Add new category</option>
                                     </select>
-
+                                    {showCategoryForm && <CategoryForm />}
                                 </div>
                                 <div className='flex gap-2'>
                                     <div className='flex flex-col'>

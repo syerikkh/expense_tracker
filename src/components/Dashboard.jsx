@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { AppIcon } from './Icons/AppIcon'
 import { GreenDot } from './Icons/GreenDot'
 import { LeadingIcon } from './Icons/LeadingIcon'
@@ -6,17 +6,18 @@ import { BlueDot } from './Icons/BlueDot'
 import Link from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import axiosInstance from '@/pages/axiosInstance'
-import AxiosInstance from '@/pages/axiosInstance'
-import createAxiosInstance from '@/pages/axiosInstance'
+import { Chart } from 'chart.js'
+import { MyChart } from './MyChart'
+
 export const Dashboard = () => {
     const router = useRouter();
-    const [userId, setUserId] = useState(null);
+    const { userId } = router.query;
 
     useEffect(() => {
         const fetchProtectedData = async () => {
             try {
                 const token = localStorage.getItem('authToken');
+                console.log("getTOken", token)
                 if (!token) {
                     alert("Please log in");
                     router.push('/');
@@ -26,18 +27,33 @@ export const Dashboard = () => {
                 // const res = await axiosInstance.get("/profile");
 
                 const res = await axios.get('http://localhost:8000/profile', {
-                    headers: { Authorization: `Bearer ${token}` }
+                    headers: { "Authorization": `Bearer ${token}` }
                 });
                 console.log('tokenasdasd', token);
-                setUserId(res.data.message.split(', ')[1]);
             } catch (error) {
                 console.error(error);
 
             }
         };
         fetchProtectedData();
-    }, [router]);
+    }, []);
 
+    const [categories, setCategoriesData] = useState([]);
+
+    const fetchCategoriesData = async () => {
+        try {
+            const token = localStorage.getItem("authToken");
+            const res = await axios.get("http://localhost:8000/categories", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            setCategoriesData(res.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    useEffect(() => {
+        fetchCategoriesData()
+    }, [])
 
     return (
         <div className='w-[100vw] h-[100vh] flex flex-col bg-[#F3F4F6]'>
@@ -46,6 +62,7 @@ export const Dashboard = () => {
                     <div className='flex gap-6'>
                         <AppIcon />
                         <h1 className='font-semibold'>Dashboard</h1>
+
                         <Link href={`/records/${userId}`}><button>Records</button></Link>
                     </div>
                     <div>
@@ -115,12 +132,8 @@ export const Dashboard = () => {
                             <h1 className='font-semibold'>Income - Expense</h1>
                         </div>
                         <div className='py-8 px-6'>
-                            <div class="w-full">
-                                <canvas
-                                    data-te-chart="bar"
-                                    data-te-labels="['Monday', 'Tuesday' , 'Wednesday' , 'Thursday' , 'Friday' , 'Saturday' , 'Sunday ']"
-                                    data-te-dataset-data="[2112, 2343, 2545, 3423, 2365, 1985, 987]">
-                                </canvas>
+                            <div className='w-full'>
+                                <MyChart categories={categories.map(category => category.user_id === userId ? category.name : <></>)} />
                             </div>
                         </div>
                     </div>

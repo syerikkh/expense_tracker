@@ -5,9 +5,8 @@ axios.defaults.baseURL = 'http://localhost:8000';
 
 export const CategoryForm = () => {
     const [closeForm, setCloseForm] = useState(false);
-    const [name, setName] = useState();
-    const [category_image, setCategory_image] = useState();
-    const [description, setDescription] = useState();
+    const [name, setName] = useState('');
+    const [category_image, setCategory_image] = useState('');
 
     const router = useRouter();
     const { userId } = router.query;
@@ -19,10 +18,9 @@ export const CategoryForm = () => {
                 console.error("Token not found");
                 return;
             }
-
             const response = await axios.get("http://localhost:8000/categories", {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`
                 }
             });
 
@@ -36,10 +34,12 @@ export const CategoryForm = () => {
             const token = localStorage.getItem("authToken");
             const config = {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`,
+
                 }
             };
-            await axios.post("http://localhost:8000/categories", { userId, name, category_image }, config)
+            console.log('token', token)
+            await axios.post("http://localhost:8000/categories", { user_id: userId, name, category_image }, config)
             setCloseForm(!closeForm);
             console.log("Category added successfully")
         } catch (error) {
@@ -47,9 +47,13 @@ export const CategoryForm = () => {
         }
     };
     useEffect(() => {
-        fetchData()
+        fetchData();
     }, []);
 
+
+    console.log('userId', userId);
+    console.log('name', name);
+    console.log('categotyimage', category_image);
     return (
         <div className={`flex items-center justify-center fixed top-0 left-0 w-full h-screen ${closeForm && "hidden"}`}>
             <div className='w-screen h-full bg-[#00000080] absolute top-0 left-0'></div>
@@ -65,7 +69,7 @@ export const CategoryForm = () => {
                 <div className='p-3 flex gap-2 items-center'>
                     <div>
                         <select value={category_image} onChange={e => setCategory_image(e.target.value)} className="select text-center select-bordered flex text-2xl">
-                            <option disabled selected>⌂</option>
+                            <option hidden selected>⌂</option>
                             <option>🍴</option>
                             <option>🛍</option>
                             <option>🏡</option>
@@ -78,7 +82,6 @@ export const CategoryForm = () => {
                     </div>
 
                     <input value={name} onChange={e => setName(e.target.value)} className='w-full p-3 rounded-lg' type="text" name="" placeholder='Name' id="" />
-
 
                 </div>
                 <div className='p-1'>

@@ -26,7 +26,7 @@ export const Records = () => {
                 return;
             }
             const response = await axios.get("http://localhost:8000/categories", {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { "Authorization": `Bearer ${token}` }
             });
             setData(response.data);
 
@@ -68,19 +68,48 @@ export const Records = () => {
     const clearAllCategories = async () => {
         try {
             const token = localStorage.getItem("authToken");
-            await axios.delete("http://localhost:8000/categories", {
-                headers: { Authorization: `Bearer ${token}` }
+            if (!token) {
+                console.error('Token not found');
+                return;
+            }
+            const response = await axios.delete("http://localhost:8000/categories", {
+                headers: { 'Authorization': `Bearer ${token}` },
             })
-            fetchData();
+
+            if (response.status === 202) {
+                fetchData();
+            } else {
+                console.error("error deleting")
+            }
+
         } catch (error) {
             console.error(error)
+        }
+    }
+
+    const deleteSpecificCategory = async (categoryId) => {
+        try {
+            const token = localStorage.getItem("authToken");
+            if (!token) {
+                console.error('Token not found');
+                return;
+            }
+            const res = await axios.delete(`http://localhost:8000/categories/${categoryId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.status === 202) {
+                fetchData();
+            } else {
+                console.error('Error Deleting category');
+            }
+        } catch (error) {
+            console.error("Erroroororro", error);
         }
     }
 
     const [addRecords, setAddRecords] = useState(false);
     const [categoryForm, setCategoryForm] = useState(false);
     const [range, setRange] = useState();
-
 
     return (
         <>
@@ -127,9 +156,7 @@ export const Records = () => {
                                 <button onClick={clearAllCategories} className='text-[#1F2937]'>Clear</button>
                             </div>
                             <div className='mt-4 flex flex-col gap-2'>
-                                {data.map((categoryData) =>
-                                    <Category key={categoryData.id} text={categoryData.name} />
-                                )}
+                                {data.map((categoryData) => categoryData.user_id === userId ? <div className='flex justify-between'><Category key={categoryData.id} text={categoryData.name} /> <button onClick={() => deleteSpecificCategory(categoryData.id)} className='bg-gray-400 p-1 rounded-full w-4 h-4 flex justify-center items-center text-white'>-</button> </div> : null)}
                             </div>
                             <div>
                                 <button onClick={() => { setCategoryForm(!categoryForm) }} className='flex gap-2 justify-center items-center mt-2'>

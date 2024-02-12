@@ -26,14 +26,17 @@ export const LogIn = () => {
             const res = await axios.post('http://localhost:8000/login', { email, password });
             if (res.status === 200) {
                 console.log('Successfully logged in');
-                const { token } = res.data.data;
+                const { token, userId } = res.data.data;
                 localStorage.setItem('authToken', token);
                 console.log('Token:', token);
-
-                const { userId } = res.data.data;
+                // await axios.post('http://localhost:8000/login', { email, password }, {
+                //     headers: { Authorization: `Bearer ${token}` }
+                // })
                 router.push(`/dashboard/${userId}`);
+                console.log
 
             } else {
+
                 alert('Invalid email or password');
             }
         } catch (error) {

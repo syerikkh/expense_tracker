@@ -7,6 +7,7 @@ import { Select } from './Select'
 import { RecordContext } from '@/context/RecordCont'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { DeleteIcon } from './Icons/DeleteIcon'
 
 export const RecordsPart2 = () => {
     const [data, setData] = useState([]);
@@ -21,7 +22,7 @@ export const RecordsPart2 = () => {
             const token = localStorage.getItem("authToken");
             const res = await axios.get(`http://localhost:8000/transactions?user_id=${userId}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    "Authorization": `Bearer ${token}`
                 }
             });
             setData(res.data);
@@ -38,10 +39,28 @@ export const RecordsPart2 = () => {
 
     const deleteAllTransactions = async () => {
         try {
-            await axios.delete("http://localhost:8000/transactions");
+            const token = localStorage.getItem("authToken")
+            await axios.delete("http://localhost:8000/transactions", {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             fetchTransactionsData();
         } catch (error) {
             console.error(error)
+        }
+    }
+    const deleteSpecificTransaction = async (transactionId) => {
+        try {
+            const token = localStorage.getItem("authToken");
+            const res = await axios.delete(`http://localhost:8000/transactions/${transactionId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            if (res.status === 202) {
+                fetchTransactionsData()
+            } else {
+                console.error("Error deleting transaction");
+            }
+        } catch (error) {
+            console.error(error);
         }
     }
     const fetchCategoriesData = async () => {
@@ -52,7 +71,7 @@ export const RecordsPart2 = () => {
                 return
             }
             const res = await axios.get(`http://localhost:8000/categories?user_id=${userId}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { "Authorization": `Bearer ${token}` }
             });
             setCategories(res.data)
         } catch (error) {
@@ -104,7 +123,7 @@ export const RecordsPart2 = () => {
                                             <div className='flex gap-4 justify-center items-center'>
                                                 <input type="checkbox" className="checkbox checkbox-primary" />
                                                 {categories.map((category) =>
-                                                    category.id === transaction.category_id ? (
+                                                    category.id === transaction.category_id && category.user_id === transaction.user_id ? (
                                                         <div key={category.id}>
                                                             {category.category_image}
                                                         </div>
@@ -116,10 +135,13 @@ export const RecordsPart2 = () => {
                                                     <div>{transaction.transaction_time}</div>
                                                 </div>
                                             </div>
-                                            <p className={` ${transaction.transaction_type === 'EXP' ? "text-red-500" : "text-[#23E01F]"} font-bold`}>
-                                                {`${transaction.transaction_type === 'EXP' ? "-" : "+"}`}
-                                                {transaction.amount}₮
-                                            </p>
+                                            <div className='flex gap-8 items-center'>
+                                                <p className={` ${transaction.transaction_type === 'EXP' ? "text-red-500" : "text-[#23E01F]"} font-bold`}>
+                                                    {`${transaction.transaction_type === 'EXP' ? "-" : "+"}`}
+                                                    {transaction.amount}₮
+                                                </p>
+                                                <button onClick={() => deleteSpecificTransaction(transaction.id)} className='btn p-1'><DeleteIcon /></button>
+                                            </div>
                                         </label>
                                     </div>
                                 </div>
