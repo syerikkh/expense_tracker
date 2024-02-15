@@ -56,7 +56,7 @@ export const Dashboard = () => {
     }, [])
 
     return (
-        <div className='w-[100vw] h-[100vh] flex flex-col bg-[#F3F4F6]'>
+        <div className='w-[100vw] flex flex-col bg-[#F3F4F6]'>
             <div className='w-full px-[340px] py-6 bg-white'>
                 <div className='flex justify-between '>
                     <div className='flex gap-6'>
@@ -133,7 +133,7 @@ export const Dashboard = () => {
                         </div>
                         <div className='py-8 px-6'>
                             <div className='w-full'>
-                                <MyChart categories={categories.map(category => category.user_id === userId ? category.name : <></>)} />
+                                <MyChart />
                             </div>
                         </div>
                     </div>
