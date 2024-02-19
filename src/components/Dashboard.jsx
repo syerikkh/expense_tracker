@@ -1,73 +1,52 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppIcon } from './Icons/AppIcon'
 import { GreenDot } from './Icons/GreenDot'
 import { LeadingIcon } from './Icons/LeadingIcon'
 import { BlueDot } from './Icons/BlueDot'
 import Link from 'next/link'
-import axios from 'axios'
 import { useRouter } from 'next/router'
-import { Chart } from 'chart.js'
 import { MyChart } from './MyChart'
+import { BarChart } from './BarChart'
+import axios from 'axios'
+
 
 export const Dashboard = () => {
+    const [userDatas, setUserDatas] = useState([]);
+
     const router = useRouter();
     const { userId } = router.query;
 
-    useEffect(() => {
-        const fetchProtectedData = async () => {
-            try {
-                const token = localStorage.getItem('authToken');
-                console.log("getTOken", token)
-                if (!token) {
-                    alert("Please log in");
-                    router.push('/');
-                    return;
-                }
-
-                // const res = await axiosInstance.get("/profile");
-
-                const res = await axios.get('http://localhost:8000/profile', {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                console.log('tokenasdasd', token);
-            } catch (error) {
-                console.error(error);
-
-            }
-        };
-        fetchProtectedData();
-    }, []);
-
-    const [categories, setCategoriesData] = useState([]);
-
-    const fetchCategoriesData = async () => {
-        try {
-            const token = localStorage.getItem("authToken");
-            const res = await axios.get("http://localhost:8000/categories", {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            setCategoriesData(res.data);
-        } catch (error) {
-            console.error(error);
-        }
+    const getUserData = async () => {
+        const res = await axios.get("http://localhost:8000/signup");
+        setUserDatas(res.data);
     }
+
     useEffect(() => {
-        fetchCategoriesData()
+        getUserData();
+
+        if (!localStorage.getItem("authToken")) {
+            alert("Please log in");
+            router.push('/');
+        }
     }, [])
 
+
+
+    console.log('user', userId)
     return (
-        <div className='w-[100vw] flex flex-col bg-[#F3F4F6]'>
+        <div className='w-[100vw] pb-10 flex flex-col bg-[#F3F4F6]'>
             <div className='w-full px-[340px] py-6 bg-white'>
                 <div className='flex justify-between '>
-                    <div className='flex gap-6'>
+                    <div className='flex gap-6 items-center'>
                         <AppIcon />
                         <h1 className='font-semibold'>Dashboard</h1>
-
                         <Link href={`/records/${userId}`}><button>Records</button></Link>
+
                     </div>
-                    <div>
-                        <div className='p-2 bg-[#0166FF] text-white rounded-full'>+ Record</div>
+                    <div className='flex gap-4 items-center'>
+                        <div className='p-4 btn btn-primary text-white rounded-full'>+ Record</div>
                         <img src="" alt="" />
+                        {userDatas.map((userData) => userData.id === userId ? userData.name : null)}
                     </div>
                 </div>
             </div>
@@ -119,11 +98,7 @@ export const Dashboard = () => {
                         </div>
                         <div className='py-8 px-6'>
                             <div class="w-full">
-                                <canvas
-                                    data-te-chart="bar"
-                                    data-te-labels="['Monday', 'Tuesday' , 'Wednesday' , 'Thursday' , 'Friday' , 'Saturday' , 'Sunday ']"
-                                    data-te-dataset-data="[2112, 2343, 2545, 3423, 2365, 1985, 987]">
-                                </canvas>
+                                {/* <BarChart /> */}
                             </div>
                         </div>
                     </div>
@@ -132,7 +107,7 @@ export const Dashboard = () => {
                             <h1 className='font-semibold'>Income - Expense</h1>
                         </div>
                         <div className='py-8 px-6'>
-                            <div className='w-full'>
+                            <div class="w-full">
                                 <MyChart />
                             </div>
                         </div>

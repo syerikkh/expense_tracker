@@ -11,12 +11,23 @@ import { jwtDecode } from 'jwt-decode'
 import { useRouter } from 'next/router'
 
 export const Records = () => {
+    const [all, setAll] = useState();
+    const [exp, setExp] = useState();
+    const [inc, setInc] = useState();
     const [userId, setUserId] = useState(null);
     const [data, setData] = useState([]);
     const [decodedToken, setDecodedToken] = useState();
+    const [userDatas, setUserDatas] = useState([]);
 
     const [token, setToken] = useState();
     const router = useRouter();
+    const { name } = router.query;
+
+    const handleFilterChange = (filterType) => {
+        setAll(filterType === 'all');
+        setInc(filterType === 'inc');
+        setExp(filterType === 'exp')
+    };
 
     const fetchData = async () => {
         try {
@@ -34,8 +45,15 @@ export const Records = () => {
             console.error(error)
         }
 
+    };
+
+    const getUserData = async () => {
+        const res = await axios.get("http://localhost:8000/signup");
+        setUserDatas(res.data);
     }
     useEffect(() => {
+        getUserData();
+
         const token = localStorage.getItem("authToken");
         if (!token) {
             router.push('/')
@@ -113,17 +131,18 @@ export const Records = () => {
 
     return (
         <>
-            <div className='w-[100vw] h-screen flex flex-col bg-[#F3F4F6]'>
+            <div className='w-[100vw] pb-10 flex flex-col bg-[#F3F4F6]'>
                 <div className='w-full px-[340px] py-6 bg-white'>
                     <div className='flex justify-between '>
-                        <div className='flex gap-6'>
+                        <div className='flex gap-6 items-center'>
                             <AppIcon />
                             <Link href={`/dashboard/${userId}`}><button>Dashboard</button></Link>
                             <h1 className='font-semibold'>Records</h1>
                         </div>
-                        <div>
-                            <div className='p-2 bg-[#0166FF] text-white rounded-full'>+ Record</div>
+                        <div className='flex items-center gap-4'>
+                            <div className='p-4 btn btn-primary text-white rounded-full'>+ Record</div>
                             <img src="" alt="" />
+                            {userDatas.map((userData) => userData.id === userId ? userData.name : null)}
                         </div>
                     </div>
                 </div>
@@ -137,15 +156,15 @@ export const Records = () => {
                             <p className='font-bold'>Types</p>
                             <div className="form-control gap-2 mt-4">
                                 <label className="flex gap-2 cursor-pointer">
-                                    <input type="checkbox" className="checkbox checkbox-primary rounded-full" />
+                                    <input value={all} type="radio" checked={all} onChange={() => { setAll(true); setInc(false); setExp(false); handleFilterChange('all') }} className="radio radio-primary rounded-full" />
                                     <div className="label-text">All</div>
                                 </label>
                                 <label className="flex gap-2 cursor-pointer">
-                                    <input type="checkbox" className="checkbox checkbox-primary rounded-full" />
+                                    <input value={inc} type="radio" checked={inc} onChange={() => { setAll(false); setInc(true); setExp(false); handleFilterChange('inc') }} className="radio radio-primary rounded-full" />
                                     <div className="label-text">Income</div>
                                 </label>
                                 <label className="flex gap-2 cursor-pointer">
-                                    <input type="checkbox" className="checkbox checkbox-primary rounded-full" />
+                                    <input value={exp} type="radio" checked={exp} onChange={() => { setAll(false); setInc(false); setExp(true); handleFilterChange('exp') }} className="radio radio-primary rounded-full" />
                                     <div className="label-text">Expense</div>
                                 </label>
                             </div>
@@ -178,7 +197,7 @@ export const Records = () => {
                         </div>
                     </div>
 
-                    <RecordsPart2 />
+                    <RecordsPart2 filterType={all ? 'all' : exp ? 'exp' : 'inc'} />
                 </div>
 
             </div >

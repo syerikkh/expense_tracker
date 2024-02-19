@@ -42,7 +42,7 @@ export const MyChart = () => {
     }, []);
 
     const userCategories = categories.filter(category => category.user_id === userId);
-    const userTransactions = transactions.filter(transaction => transaction.user_id === userId);
+    const userTransactions = transactions.filter(transaction => transaction.user_id === userId && transaction.transaction_type === 'EXP');
 
     const groupedTransactions = userCategories.map(category => {
         const categoryTransactions = userTransactions.filter(transaction => transaction.category_id === category.id);

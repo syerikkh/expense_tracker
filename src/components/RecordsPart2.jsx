@@ -9,7 +9,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { DeleteIcon } from './Icons/DeleteIcon'
 
-export const RecordsPart2 = () => {
+export const RecordsPart2 = ({ filterType }) => {
     const [data, setData] = useState([]);
     const [categories, setCategories] = useState([]);
 
@@ -17,7 +17,7 @@ export const RecordsPart2 = () => {
     const { userId } = router.query;
 
 
-    const fetchTransactionsData = async () => {
+    const fetchTransactionsData = async (filterType) => {
         try {
             const token = localStorage.getItem("authToken");
             const res = await axios.get(`http://localhost:8000/transactions?user_id=${userId}`, {
@@ -113,7 +113,7 @@ export const RecordsPart2 = () => {
                 </div>
 
 
-                <div>
+                <div className='flex flex-col gap-4'>
                     {data.map((transaction) => (
                         transaction.user_id === userId ? (
                             <div key={transaction.id} className='flex flex-col gap-3'>
@@ -130,9 +130,8 @@ export const RecordsPart2 = () => {
                                                     ) : null
                                                 )}
                                                 <div className="label-text flex flex-col text-xs">
-                                                    {categories.map((category) => category.id === transaction.category_id ? <div>{category.name}</div> : null)}
-
-                                                    <div>{transaction.transaction_time}</div>
+                                                    {categories.map((category) => category.id === transaction.category_id ? <div className='text-base'>{category.name}</div> : null)}
+                                                    <p className='text-gray-500'>{transaction.transaction_time.slice(0, -3)}</p>
                                                 </div>
                                             </div>
                                             <div className='flex gap-8 items-center'>
