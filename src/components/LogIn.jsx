@@ -47,6 +47,7 @@ export const LogIn = () => {
         setEmail('');
         setPassword('');
     };
+    console.log('branch')
     return (
         <div className="w-[100vw] h-[100vh] flex justify-center items-center">
             <div className="w-1/2 h-full bg-[#0166FF] flex justify-center items-center">
