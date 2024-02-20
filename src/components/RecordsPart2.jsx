@@ -15,7 +15,7 @@ export const RecordsPart2 = ({ filterType }) => {
 
     const router = useRouter();
     const { userId } = router.query;
-
+    console.log('branch')
 
     const fetchTransactionsData = async (filterType) => {
         try {
