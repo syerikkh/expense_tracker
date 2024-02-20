@@ -129,6 +129,7 @@ export const Records = () => {
     const [categoryForm, setCategoryForm] = useState(false);
     const [range, setRange] = useState();
 
+    console.log('branch')
     return (
         <>
             <div className='w-[100vw] pb-10 flex flex-col bg-[#F3F4F6]'>
