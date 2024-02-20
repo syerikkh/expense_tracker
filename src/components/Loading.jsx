@@ -2,6 +2,7 @@ import React from 'react'
 import { AppIcon } from './Icons/AppIcon'
 
 export const Loading = () => {
+    console.log('main log')
     return (
         <div className='flex w-[100vw] h-[100vh] justify-center items-center flex-col gap-12'>
             <div className='font-bold flex gap-2'>
