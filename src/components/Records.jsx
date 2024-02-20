@@ -29,7 +29,6 @@ export const Records = () => {
         setExp(filterType === 'exp')
     };
 
-
     const fetchData = async () => {
         try {
             const token = localStorage.getItem("authToken");
@@ -129,8 +128,6 @@ export const Records = () => {
     const [addRecords, setAddRecords] = useState(false);
     const [categoryForm, setCategoryForm] = useState(false);
     const [range, setRange] = useState();
-
-    console.log('latest branch')
 
     return (
         <>
