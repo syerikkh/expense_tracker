@@ -27,13 +27,13 @@ export const getServerSideProps = async (context) => {
   }
 
   const [profileRes, transactionsRes, categoriesRes] = await Promise.all([
-    axios.get("http://192.168.1.5:8000/profile", {
+    axios.get("https://expense-tracker-backend-qlrz.onrender.com/profile", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }),
-    axios.get("http://192.168.1.5:8000/transactions"),
-    axios.get("http://192.168.1.5:8000/categories"),
+    axios.get("https://expense-tracker-backend-qlrz.onrender.com/transactions"),
+    axios.get("https://expense-tracker-backend-qlrz.onrender.com/categories"),
   ]);
 
   const userData = profileRes.data;

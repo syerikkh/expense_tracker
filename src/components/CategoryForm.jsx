@@ -13,11 +13,14 @@ export const CategoryForm = ({ addCategory }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://192.168.1.5:8000/categories", {
-        user_id: userId,
-        name,
-        category_image,
-      });
+      const res = await axios.post(
+        "https://expense-tracker-backend-qlrz.onrender.com/categories",
+        {
+          user_id: userId,
+          name,
+          category_image,
+        }
+      );
       addCategory(res.data);
       setCloseForm(true);
       console.log("Category added successfully");

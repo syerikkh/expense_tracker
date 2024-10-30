@@ -19,10 +19,13 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("http://192.168.1.5:8000/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://expense-tracker-backend-qlrz.onrender.com/login",
+        {
+          email,
+          password,
+        }
+      );
       if (res.status === 200) {
         const { token, userId } = res.data.data;
         Cookies.set("authToken", token);

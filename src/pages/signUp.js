@@ -24,11 +24,14 @@ export default function SignUp() {
       return;
     }
     try {
-      const res = await axios.post("http://192.168.1.5:8000/signup", {
-        name,
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://expense-tracker-backend-qlrz.onrender.com/signup",
+        {
+          name,
+          email,
+          password,
+        }
+      );
       if (res.status === 200) {
         console.log("data", res.data);
         const { token, user } = res.data;

@@ -13,9 +13,12 @@ export const RecordsPart2 = ({ categories, transactions, userData }) => {
   const deleteAllTransactions = async () => {
     try {
       const token = Cookies.get("authToken");
-      const res = await axios.delete("http://192.168.1.5:8000/transactions", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.delete(
+        "https://expense-tracker-backend-qlrz.onrender.com/transactions",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       if (res.status === 202) {
         setTransactionsData([]);
         console.log("Successfully deleted transactions");
@@ -28,7 +31,7 @@ export const RecordsPart2 = ({ categories, transactions, userData }) => {
     try {
       const token = Cookies.get("authToken");
       const res = await axios.delete(
-        `http://192.168.1.5:8000/transactions/${transactionId}`,
+        `https://expense-tracker-backend-qlrz.onrender.com/transactions/${transactionId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

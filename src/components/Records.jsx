@@ -32,11 +32,14 @@ export const Records = ({ userData, transactions, categories }) => {
   const clearAllCategories = async () => {
     const token = Cookies.get("authToken");
     try {
-      const res = await axios.delete("http://192.168.1.5:8000/categories", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.delete(
+        "https://expense-tracker-backend-qlrz.onrender.com/categories",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (res.status === 202) {
         setCategoryData([]);
         console.log("Successfully deleted");
@@ -50,7 +53,7 @@ export const Records = ({ userData, transactions, categories }) => {
     try {
       const token = Cookies.get("authToken");
       const res = await axios.delete(
-        `http://192.168.1.5:8000/categories/${categoryId}`,
+        `https://expense-tracker-backend-qlrz.onrender.com/categories/${categoryId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

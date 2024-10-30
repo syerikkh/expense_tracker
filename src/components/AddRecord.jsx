@@ -23,7 +23,7 @@ export const AddRecord = ({ categories, addTransaction }) => {
     try {
       const token = Cookies.get("authToken");
       const res = await axios.post(
-        `http://192.168.1.5:8000/transactions?user_id=${userId}`,
+        `https://expense-tracker-backend-qlrz.onrender.com/transactions?user_id=${userId}`,
         {
           user_id: userId,
           name,
