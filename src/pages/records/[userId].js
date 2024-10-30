@@ -1,15 +1,51 @@
-import { Records } from '@/components/Records'
-import { useRouter } from 'next/router';
-import React from 'react'
+import { Records } from "@/components/Records";
+import axios from "axios";
+import cookies from "next-cookies";
+import React from "react";
 
-const UserRecords = () => {
-    const router = useRouter();
-    const { userId } = router.query;
-    console.log('hi')
-    return (
+const UserRecords = ({ userData, transactions, categories }) => {
+  return (
+    <Records
+      userData={userData}
+      transactions={transactions}
+      categories={categories}
+    />
+  );
+};
 
-        <Records userId={userId} />
-    )
-}
+export const getServerSideProps = async (context) => {
+  const allCookies = cookies(context);
+  const token = allCookies.authToken;
 
-export default UserRecords
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  const [profileRes, transactionsRes, categoriesRes] = await Promise.all([
+    axios.get("http://192.168.1.5:8000/profile", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+    axios.get("http://192.168.1.5:8000/transactions"),
+    axios.get("http://192.168.1.5:8000/categories"),
+  ]);
+
+  const userData = profileRes.data;
+  const transactions = transactionsRes.data;
+  const categories = categoriesRes.data;
+  return {
+    props: {
+      userData,
+      transactions,
+      categories,
+    },
+  };
+};
+
+export default UserRecords;
